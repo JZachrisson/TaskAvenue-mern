@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+/* eslint-disable @typescript-eslint/no-var-requires */
 require('dotenv').config();
 import express, { Express } from 'express';
 import mongoose from 'mongoose';
@@ -8,6 +8,10 @@ import Pusher = require('pusher');
 const app: Express = express();
 const PORT: string | number = process.env.PORT || 8080;
 
+require('./routes/auth.routes')(app);
+import todoListsRoutes from './routes/todoLists.routes';
+import todoItemsRoutes from './routes/todoItems.routes';
+
 const corsOptions = {
   origin: 'http://localhost:3000',
 };
@@ -15,6 +19,9 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use('/api/todolists', todoListsRoutes);
+app.use('/api/todoitems', todoItemsRoutes);
 
 const pusher = new Pusher({
   appId: process.env.PUSHER_ID,

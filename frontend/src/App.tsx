@@ -9,14 +9,14 @@ import Login from './auth/components/Login';
 import Register from './auth/components/Register';
 import Home from './shared/pages/Home';
 import Profile from './user/pages/Profile';
-//import TodoList from './TodoList';
+import TodoList from './todos/components/TodoList';
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState(undefined);
 
   useEffect(() => {
     const user = AuthService.getCurrentUser();
-    console.log('USER', user);
+
     if (user) {
       setCurrentUser(user);
     }
@@ -88,9 +88,9 @@ const App = () => {
               <Route path="/" exact>
                 <Home />
               </Route>
-              {/* <Route path="/list/:id" exact>
+              <Route path="/list/:id" exact>
                 <TodoList />
-              </Route> */}
+              </Route>
               <Route path="/profile" exact>
                 <Profile />
               </Route>

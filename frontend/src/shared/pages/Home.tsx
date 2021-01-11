@@ -6,13 +6,15 @@ import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 
 const newList = async (history: any, user: any) => {
-  const list = await axios.post('http://localhost:8080/api/lists', {
+  const list = await axios.post('http://localhost:8080/api/todolists', {
     name: 'The newest list',
     listId: uuidv4(),
     creator: user,
   });
 
-  history.push(`/list/${list.data.list.listId}`);
+  console.log('LIST', list);
+
+  history.push(`/list/${list.data.todoList.listId}`);
 };
 
 const Home = () => {

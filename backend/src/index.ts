@@ -4,11 +4,11 @@ import express, { Express } from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import Pusher = require('pusher');
+import bodyParser from 'body-parser';
 
 const app: Express = express();
 const PORT: string | number = process.env.PORT || 8080;
 
-require('./routes/auth.routes')(app);
 import todoListsRoutes from './routes/todoLists.routes';
 import todoItemsRoutes from './routes/todoItems.routes';
 
@@ -17,9 +17,10 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
+require('./routes/auth.routes')(app);
 app.use('/api/todolists', todoListsRoutes);
 app.use('/api/todoitems', todoItemsRoutes);
 

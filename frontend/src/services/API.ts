@@ -23,7 +23,7 @@ export const addTodo = async (
 
 export const deleteTodo = async (_id: string): Promise<void> => {
   try {
-    const deletedTodo: void = await axios.delete(`${baseUrl}/${_id}`);
+    const deletedTodo: void = await axios.delete(`${baseUrl}todoitems/${_id}`);
     return deletedTodo;
   } catch (error) {
     throw new Error(error);

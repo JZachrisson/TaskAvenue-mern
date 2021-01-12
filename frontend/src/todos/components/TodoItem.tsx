@@ -1,4 +1,5 @@
 import React from 'react';
+import { deleteTodo } from '../../services/API';
 import './TodoItem.css';
 
 type Props = TodoProps & {
@@ -15,8 +16,8 @@ const TodoItem: React.FC<Props> = ({ todo }) => {
 
       <div>
         <span className="todo-item-creator">{todo.creator}</span>
-        <button className="todo-item-edit-btn">Edit</button>
-        <button>Delete</button>
+        <button className="todo-item-edit-btn">Complete</button>
+        <button onClick={() => deleteTodo(todo._id)}>Delete</button>
       </div>
     </div>
   );

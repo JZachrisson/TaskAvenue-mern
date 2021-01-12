@@ -1,0 +1,9 @@
+.todo-item-card {
+  background-color: rgb(149, 149, 255);
+  border: 1px solid black;
+  margin: 5px;
+}
+
+.todo-item {
+  margin: 5px;
+}

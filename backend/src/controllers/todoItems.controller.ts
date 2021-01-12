@@ -2,6 +2,7 @@ import { Response, Request } from 'express';
 import { ITodoItem } from '../types/todoItem';
 import TodoList from '../models/todoList';
 import TodoItem from '../models/todoItem';
+import todoItem from '../models/todoItem';
 
 export const getTodoItemById = async (
   req: Request,
@@ -65,6 +66,28 @@ export const getTodoItemsByListId = async (
         (item: { toObject: (arg0: { getters: boolean }) => void }) =>
           item.toObject({ getters: true })
       ),
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const toggleCompletedTodo = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    TodoItem.findById(req.params.id, function (err: any, todoItem: any) {
+      todoItem.status = !todoItem.status;
+      todoItem.save(function (err: any) {
+        if (err) {
+          console.error('ERROR!');
+        }
+      });
+    });
+
+    res.status(201).json({
+      message: 'Todo updated',
     });
   } catch (error) {
     console.log(error);

@@ -21,3 +21,7 @@
 .todo-item-edit-btn {
   margin-right: 10px;
 }
+
+.line-through {
+  text-decoration: line-through;
+}

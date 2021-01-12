@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useRef, useState } from 'react';
-import { addTodo, deleteTodo } from '../../services/API';
+import { addTodo, deleteTodo, toggleCompletedTodo } from '../../services/API';
 import TodoItem from './TodoItem';
 import AuthService from '../../services/auth-service';
 import { useParams } from 'react-router-dom';
@@ -63,13 +63,22 @@ const TodoList = () => {
         .get(`http://localhost:8080/api/todoitems/${data.itemId}`)
         .then((response) => {
           setTodos([response.data.item, ...todos]);
-          console.log(todos);
         });
     });
 
     const itemsChannel = pusher.subscribe('todoitems');
     itemsChannel.bind('deleted', function (data: any) {
       console.log('DELETED');
+
+      axios
+        .get(`http://localhost:8080/api/todoitems/list/${id}`)
+        .then((response) => {
+          setTodos(response.data.items);
+        });
+    });
+
+    itemsChannel.bind('updated', function (data: any) {
+      console.log('UPDATED');
 
       axios
         .get(`http://localhost:8080/api/todoitems/list/${id}`)
@@ -111,7 +120,13 @@ const TodoList = () => {
       </form>
       <ul className="todo-list">
         {todos.map((todo) => {
-          return <TodoItem todo={todo} deleteTodo={deleteTodo} />;
+          return (
+            <TodoItem
+              todo={todo}
+              deleteTodo={deleteTodo}
+              toggleCompletedTodo={toggleCompletedTodo}
+            />
+          );
         })}
       </ul>
     </div>

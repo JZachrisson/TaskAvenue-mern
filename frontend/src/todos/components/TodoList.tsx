@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
+import { addTodo } from '../../services/API';
 import AuthService from '../../services/auth-service';
 import { useParams } from 'react-router-dom';
 import Pusher from 'pusher-js';
@@ -9,26 +10,23 @@ const TodoList = () => {
   const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
 
   let { id } = useParams<{ id: string }>();
-  const [input, setInput] = useState('');
+
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
   const [todos, setTodos] = useState([]);
 
-  const addTodo = (e: any) => {
+  const handleAddTodo = (e: React.FormEvent) => {
     e.preventDefault();
-
-    axios.post('http://localhost:8080/api/todoitems', {
-      name: input,
-      description: 'A hardcoded description',
-      creator: currentUser.username,
-      listId: id,
-    });
-
-    setInput('');
+    addTodo(name, description, currentUser.username, id);
+    setName('');
+    setDescription('');
   };
 
   useEffect(() => {
     axios
       .get(`http://localhost:8080/api/todoitems/list/${id}`)
       .then((response) => {
+        console.log(response);
         setTodos(response.data.items);
       });
   }, []);
@@ -57,14 +55,25 @@ const TodoList = () => {
   return (
     <div className="App">
       <form>
-        <input value={input} onChange={(e) => setInput(e.target.value)} />
-        <button onClick={addTodo}>Add todo</button>
+        <div>
+          <label htmlFor="name">Name</label>
+          <input value={name} onChange={(e) => setName(e.target.value)} />
+        </div>
+        <div>
+          <label htmlFor="description">Description</label>
+          <input
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </div>
+        <button onClick={handleAddTodo}>Add todo</button>
       </form>
       <ul>
         {todos.map((todo) => {
           return (
             <li>
-              {todo.name} created by: {todo.creator}
+              {todo.name} <br></br>
+              {todo.description} created by: {todo.creator}
             </li>
           );
         })}

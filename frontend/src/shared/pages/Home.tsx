@@ -12,8 +12,6 @@ const newList = async (history: any, user: any) => {
     creator: user,
   });
 
-  console.log('LIST', list);
-
   history.push(`/list/${list.data.todoList.listId}`);
 };
 

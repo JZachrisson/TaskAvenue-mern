@@ -16,7 +16,8 @@ export const getTodoItemById = async (
     console.log(error);
   }
 
-  res.json({ item: item.toObject({ getters: true }) });
+  // res.json({ item: item.toObject({ getters: true }) });
+  res.json({ item: item });
 };
 
 export const createTodoItem = async (

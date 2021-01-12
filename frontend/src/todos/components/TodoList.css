@@ -1,4 +1,40 @@
+.todolist-container {
+  margin: 0 auto;
+}
+
+.todo-form {
+  display: flex;
+  position: relative;
+  align-items: center;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.todo-form > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.todo-form input {
+  background: #f5f6f7;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  display: block;
+  margin: 0.3rem 1rem 0 0;
+}
+
 .todo-list {
   list-style: none;
   margin-top: 10px;
+}
+
+.todo-btn {
+  position: absolute;
+  top: 60px;
+  left: 450px;
+}
+
+.listHeader {
+  text-align: center;
 }

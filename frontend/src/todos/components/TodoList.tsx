@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useState } from 'react';
-import { addTodo } from '../../services/API';
+import React, { useEffect, useRef, useState } from 'react';
+import { addTodo, deleteTodo } from '../../services/API';
 import TodoItem from './TodoItem';
 import AuthService from '../../services/auth-service';
 import { useParams } from 'react-router-dom';
@@ -11,17 +12,32 @@ import './TodoList.css';
 const TodoList = () => {
   const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
   const [listName, setListName] = useState('');
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
   const [todos, setTodos] = useState([]);
+  const [formData, setFormData] = useState<ITodo | {}>();
 
   let { id } = useParams<{ id: string }>();
 
+  const name = useRef<HTMLInputElement>(null);
+  const description = useRef<HTMLInputElement>(null);
+
+  const clearInput = () => {
+    name.current.value = '';
+    description.current.value = '';
+  };
+
   const handleAddTodo = (e: React.FormEvent) => {
     e.preventDefault();
-    addTodo(name, description, currentUser.username, id);
-    setName('');
-    setDescription('');
+    addTodo(formData, currentUser.username, id);
+    setFormData({});
+    clearInput();
+  };
+
+  const handleForm = (e: React.FormEvent<HTMLInputElement>): void => {
+    e.preventDefault();
+    setFormData({
+      ...formData,
+      [e.currentTarget.id]: e.currentTarget.value,
+    });
   };
 
   useEffect(() => {
@@ -41,42 +57,61 @@ const TodoList = () => {
       cluster: 'eu',
     });
 
-    const channel = pusher.subscribe('todolists');
-    channel.bind('updated', function (data: any) {
+    const listChannel = pusher.subscribe('todolists');
+    listChannel.bind('updated', function (data: any) {
       axios
         .get(`http://localhost:8080/api/todoitems/${data.itemId}`)
         .then((response) => {
-          setTodos([...todos, response.data.item]);
+          setTodos([response.data.item, ...todos]);
           console.log(todos);
         });
     });
 
+    const itemsChannel = pusher.subscribe('todoitems');
+    itemsChannel.bind('deleted', function (data: any) {
+      console.log('DELETED');
+
+      axios
+        .get(`http://localhost:8080/api/todoitems/list/${id}`)
+        .then((response) => {
+          setTodos(response.data.items);
+        });
+    });
+
     return () => {
-      channel.unbind_all();
-      channel.unsubscribe();
+      listChannel.unbind_all();
+      listChannel.unsubscribe();
+      itemsChannel.unbind_all();
+      itemsChannel.unsubscribe();
     };
   }, [todos]);
 
   return (
-    <div className="todo-list-container">
-      <h1>{listName}</h1>
-      <form>
+    <div className="todolist-container">
+      <h1 className="listHeader">{listName}</h1>
+      <form className="todo-form" onSubmit={handleAddTodo}>
         <div>
-          <label htmlFor="name">Name</label>
-          <input value={name} onChange={(e) => setName(e.target.value)} />
+          <div>
+            <label htmlFor="name">Name</label>
+            <input ref={name} onChange={handleForm} type="text" id="name" />
+          </div>
+          <div>
+            <label htmlFor="description">Description</label>
+            <input
+              ref={description}
+              onChange={handleForm}
+              type="text"
+              id="description"
+            />
+          </div>
         </div>
-        <div>
-          <label htmlFor="description">Description</label>
-          <input
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </div>
-        <button onClick={handleAddTodo}>Add todo</button>
+        <button className="todo-btn" onClick={handleAddTodo}>
+          Add Item
+        </button>
       </form>
       <ul className="todo-list">
         {todos.map((todo) => {
-          return <TodoItem todo={todo} />;
+          return <TodoItem todo={todo} deleteTodo={deleteTodo} />;
         })}
       </ul>
     </div>

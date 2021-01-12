@@ -1,9 +1,23 @@
 .todo-item-card {
-  background-color: rgb(149, 149, 255);
+  display: flex;
+  max-width: 600px;
+  justify-content: space-between;
   border: 1px solid black;
+  font-size: 18px;
   margin: 5px;
+  padding: 5px;
+  padding-top: 20px;
+  padding-bottom: 15px;
 }
 
-.todo-item {
-  margin: 5px;
+.todo-item-creator {
+  margin-right: 15px;
+}
+
+.todo-item p {
+  color: grey;
+}
+
+.todo-item-edit-btn {
+  margin-right: 10px;
 }

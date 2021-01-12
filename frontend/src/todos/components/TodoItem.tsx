@@ -1,13 +1,23 @@
 import React from 'react';
 import './TodoItem.css';
 
-const TodoItem: React.FC<TodoProps> = ({ todo }) => {
+type Props = TodoProps & {
+  deleteTodo: (_id: string) => void;
+};
+
+const TodoItem: React.FC<Props> = ({ todo }) => {
   return (
     <div className="todo-item-card">
-      <li className="todo-item">
-        {todo.name}
-        {todo.description} created by: {todo.creator}
-      </li>
+      <div className="todo-item">
+        <h3>{todo.name}</h3>
+        {todo.description ? <p>{todo.description}</p> : ''}
+      </div>
+
+      <div>
+        <span className="todo-item-creator">{todo.creator}</span>
+        <button className="todo-item-edit-btn">Edit</button>
+        <button>Delete</button>
+      </div>
     </div>
   );
 };

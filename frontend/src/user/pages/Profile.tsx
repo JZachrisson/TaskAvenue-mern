@@ -23,24 +23,17 @@ const Profile = () => {
 
   return (
     <div>
-      <div className="container">
-        <div className="section">
-          <form>
-            <label htmlFor="description">List Name</label>
-            <input
-              value={listName}
-              onChange={(e) => setListName(e.target.value)}
-            />
-          </form>
-          <button
-            onClick={() => {
-              newList(history, listName, currentUser.username);
-            }}
-          >
-            Create
-          </button>
-        </div>
-      </div>
+      <form>
+        <label htmlFor="description">List Name</label>
+        <input value={listName} onChange={(e) => setListName(e.target.value)} />
+      </form>
+      <button
+        onClick={() => {
+          newList(history, listName, currentUser.username);
+        }}
+      >
+        Create
+      </button>
     </div>
   );
 };

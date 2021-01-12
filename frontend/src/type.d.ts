@@ -1,7 +1,7 @@
 interface ITodo {
   _id: string;
   name: string;
-  description: string;
+  description?: string;
   creator: string;
   status: boolean;
   listId: string;

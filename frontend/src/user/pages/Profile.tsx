@@ -1,13 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import AuthService from '../../services/auth-service';
+import { TextField, Button } from '@material-ui/core';
+import { Formik, Form } from 'formik';
 import { useHistory } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 
-const newList = async (history: any, listName: string, user: string) => {
+interface Values {
+  title: string;
+}
+
+const newList = async (history: any, values: Values, user: string) => {
   const list = await axios.post('http://localhost:8080/api/todolists', {
-    name: listName,
+    name: values.title,
     listId: uuidv4(),
     creator: user,
   });
@@ -23,17 +29,28 @@ const Profile = () => {
 
   return (
     <div>
-      <form>
-        <label htmlFor="description">List Name</label>
-        <input value={listName} onChange={(e) => setListName(e.target.value)} />
-      </form>
-      <button
-        onClick={() => {
-          newList(history, listName, currentUser.username);
+      <Formik
+        initialValues={{ title: '' }}
+        onSubmit={(values, { resetForm }) => {
+          newList(history, values, currentUser.username);
+          resetForm();
         }}
       >
-        Create
-      </button>
+        {({ values, handleChange, handleBlur }) => (
+          <Form>
+            <div>
+              <TextField
+                placeholder="Title"
+                name="title"
+                value={values.title}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+            </div>
+            <Button type="submit">Create</Button>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 };

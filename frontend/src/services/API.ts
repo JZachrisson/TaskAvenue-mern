@@ -3,14 +3,14 @@ import axios from 'axios';
 const baseUrl: string = 'http://localhost:8080/api/';
 
 export const addTodo = async (
-  formData: any,
+  values: any,
   currentUser: string,
   id: string
 ): Promise<void> => {
   try {
     const todo: Omit<ITodo, '_id'> = {
-      name: formData.name,
-      description: formData.description,
+      name: values.name,
+      description: values.description,
       creator: currentUser,
       status: false,
       listId: id,

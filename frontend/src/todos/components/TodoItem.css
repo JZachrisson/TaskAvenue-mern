@@ -1,6 +1,6 @@
 .todo-item-card {
   display: flex;
-  max-width: 600px;
+  max-width: 800px;
   justify-content: space-between;
   border: 1px solid black;
   font-size: 18px;
@@ -12,6 +12,10 @@
 
 .todo-item-creator {
   margin-right: 15px;
+}
+
+.todo-item {
+  display: flex;
 }
 
 .todo-item p {

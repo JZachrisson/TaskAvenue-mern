@@ -6,38 +6,25 @@ import TodoItem from './TodoItem';
 import AuthService from '../../services/auth-service';
 import { useParams } from 'react-router-dom';
 import Pusher from 'pusher-js';
+import { TextField, Button } from '@material-ui/core';
 import axios from 'axios';
 import './TodoList.css';
+import { Formik, Form } from 'formik';
+
+interface Values {
+  name: string;
+  description: string;
+}
 
 const TodoList = () => {
   const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
   const [listName, setListName] = useState('');
   const [todos, setTodos] = useState([]);
-  const [formData, setFormData] = useState<ITodo | {}>();
 
   let { id } = useParams<{ id: string }>();
 
-  const name = useRef<HTMLInputElement>(null);
-  const description = useRef<HTMLInputElement>(null);
-
-  const clearInput = () => {
-    name.current.value = '';
-    description.current.value = '';
-  };
-
-  const handleAddTodo = (e: React.FormEvent) => {
-    e.preventDefault();
-    addTodo(formData, currentUser.username, id);
-    setFormData({});
-    clearInput();
-  };
-
-  const handleForm = (e: React.FormEvent<HTMLInputElement>): void => {
-    e.preventDefault();
-    setFormData({
-      ...formData,
-      [e.currentTarget.id]: e.currentTarget.value,
-    });
+  const submitTodo = (values: Values) => {
+    addTodo(values, currentUser.username, id);
   };
 
   useEffect(() => {
@@ -98,26 +85,38 @@ const TodoList = () => {
   return (
     <div className="todolist-container">
       <h1 className="listHeader">{listName}</h1>
-      <form className="todo-form" onSubmit={handleAddTodo}>
-        <div>
-          <div>
-            <label htmlFor="name">Name</label>
-            <input ref={name} onChange={handleForm} type="text" id="name" />
-          </div>
-          <div>
-            <label htmlFor="description">Description</label>
-            <input
-              ref={description}
-              onChange={handleForm}
-              type="text"
-              id="description"
-            />
-          </div>
-        </div>
-        <button className="todo-btn" onClick={handleAddTodo}>
-          Add Item
-        </button>
-      </form>
+      <Formik
+        initialValues={{ name: '', description: '' }}
+        onSubmit={(values, { resetForm }) => {
+          submitTodo(values);
+          resetForm();
+        }}
+      >
+        {({ values, handleChange, handleBlur }) => (
+          <Form>
+            <div>
+              <TextField
+                placeholder="Name"
+                name="name"
+                value={values.name}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+            </div>
+            <div>
+              <TextField
+                placeholder="Description"
+                name="description"
+                value={values.description}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+            </div>
+            <Button type="submit">Add</Button>
+          </Form>
+        )}
+      </Formik>
+
       <ul className="todo-list">
         {todos.map((todo) => {
           return (

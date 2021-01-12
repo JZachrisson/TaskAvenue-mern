@@ -48,15 +48,30 @@ const db = mongoose.connection;
 
 db.once('open', () => {
   const listCollection = db.collection('todolists');
-  const changeStream = listCollection.watch();
+  const listChangeStream = listCollection.watch();
 
-  changeStream.on('change', (change) => {
+  listChangeStream.on('change', (change) => {
     if (change.operationType === 'update') {
       const values = Object.values(change.updateDescription.updatedFields);
       console.log('something updated');
       pusher.trigger('todolists', 'updated', {
         documentId: change.documentKey._id,
         itemId: values[0],
+      });
+    } else {
+      console.log('Error triggering pusher');
+    }
+  });
+
+  const itemsCollection = db.collection('todoitems');
+  const itemsChangeStream = itemsCollection.watch();
+
+  itemsChangeStream.on('change', (change) => {
+    console.log('ITEMS CHANGED', change);
+    if (change.operationType === 'delete') {
+      console.log('ITEM DELETED');
+      pusher.trigger('todoitems', 'deleted', {
+        itemId: change.documentKey._id,
       });
     } else {
       console.log('Error triggering pusher');

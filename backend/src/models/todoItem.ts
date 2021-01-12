@@ -9,7 +9,6 @@ const todoItemSchema: Schema = new Schema(
     },
     description: {
       type: String,
-      required: true,
     },
     listId: {
       type: String,

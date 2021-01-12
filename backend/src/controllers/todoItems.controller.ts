@@ -70,3 +70,20 @@ export const getTodoItemsByListId = async (
     console.log(error);
   }
 };
+
+export const deleteTodo = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const deletedTodo: ITodoItem | null = await TodoItem.findByIdAndRemove(
+      req.params.id
+    );
+    res.status(200).json({
+      message: 'Todo deleted',
+      todo: deletedTodo,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};

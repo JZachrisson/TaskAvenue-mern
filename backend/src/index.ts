@@ -73,6 +73,11 @@ db.once('open', () => {
       pusher.trigger('todoitems', 'deleted', {
         itemId: change.documentKey._id,
       });
+    } else if (change.operationType === 'update') {
+      console.log('ITEM UPDATED');
+      pusher.trigger('todoitems', 'updated', {
+        itemId: change.documentKey._id,
+      });
     } else {
       console.log('Error triggering pusher');
     }

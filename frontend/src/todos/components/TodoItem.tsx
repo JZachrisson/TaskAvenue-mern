@@ -2,10 +2,10 @@ import React from 'react';
 import { deleteTodo, toggleCompletedTodo } from '../../services/API';
 import Button from '@material-ui/core/Button';
 
+import EditIcon from '@material-ui/icons/Edit';
 import Checkbox from '@material-ui/core/Checkbox';
 
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
-import IconButton from '@material-ui/core/IconButton';
 
 import './TodoItem.css';
 
@@ -16,7 +16,7 @@ type Props = TodoProps & {
 
 const TodoItem: React.FC<Props> = ({ todo }) => {
   const checkTodo: string = todo.status ? `line-through` : '';
-  console.log(todo.status);
+
   return (
     <div className="todo-item-card">
       <div className="todo-item">
@@ -26,18 +26,28 @@ const TodoItem: React.FC<Props> = ({ todo }) => {
           onChange={() => toggleCompletedTodo(todo._id)}
         />
         <div>
-          <h3 className={checkTodo}>{todo.name}</h3>
-          {todo.description ? (
-            <p className={checkTodo}>{todo.description}</p>
-          ) : (
-            ''
-          )}
+          <div className="todo-item-text">
+            <h4 className={checkTodo}>{todo.name}</h4>
+            {todo.description ? (
+              <p className={checkTodo}>{todo.description}</p>
+            ) : (
+              ''
+            )}
+          </div>
         </div>
       </div>
 
-      <div>
+      <div className="todo-item-info">
         <span className="todo-item-creator">{todo.creator}</span>
-
+        <Button
+          style={{ marginRight: '10px' }}
+          variant="outlined"
+          color="primary"
+          onClick={() => deleteTodo(todo._id)}
+          startIcon={<EditIcon />}
+        >
+          Edit
+        </Button>
         <Button
           variant="outlined"
           color="secondary"

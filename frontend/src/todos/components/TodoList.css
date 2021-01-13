@@ -1,8 +1,17 @@
 .todo-list {
   list-style: none;
   margin-top: 10px;
+  border-top: 2px solid rgb(193, 193, 193);
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .listHeader {
   text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.clipboard-btn:hover {
+  background-color: rgb(145, 244, 145) !important;
 }

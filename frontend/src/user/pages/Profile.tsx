@@ -45,7 +45,9 @@ const Profile = () => {
                 onBlur={handleBlur}
               />
             </div>
-            <Button type="submit">Create</Button>
+            <Button variant="contained" color="primary" type="submit">
+              Create New List
+            </Button>
           </Form>
         )}
       </Formik>

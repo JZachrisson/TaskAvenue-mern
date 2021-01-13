@@ -1,13 +1,13 @@
 .todo-item-card {
   display: flex;
-  max-width: 800px;
+  max-width: 900px;
   justify-content: space-between;
-  border: 1px solid black;
-  font-size: 18px;
-  margin: 5px;
-  padding: 5px;
-  padding-top: 20px;
-  padding-bottom: 15px;
+  margin: 0 auto;
+  margin-top: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 25px;
+  padding-bottom: 10px;
 }
 
 .todo-item-creator {
@@ -24,6 +24,15 @@
 
 .todo-item-edit-btn {
   margin-right: 10px;
+}
+
+.todo-item-text {
+  text-align: left;
+  margin-left: 20px;
+}
+
+.todo-item-info {
+  margin-top: 15px;
 }
 
 .line-through {

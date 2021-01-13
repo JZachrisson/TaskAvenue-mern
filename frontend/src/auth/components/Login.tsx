@@ -141,6 +141,7 @@ const Login: React.FunctionComponent = () => {
                   className={classes.textField}
                 >
                   <TextField
+                    variant="outlined"
                     name="username"
                     id="username"
                     label="Username"
@@ -165,6 +166,7 @@ const Login: React.FunctionComponent = () => {
                   className={classes.textField}
                 >
                   <TextField
+                    variant="outlined"
                     name="password"
                     id="password"
                     label="Password"

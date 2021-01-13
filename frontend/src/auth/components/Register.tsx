@@ -101,125 +101,130 @@ const Register: React.FunctionComponent = () => {
   };
 
   return (
-    <div className={classes.root}>
-      <Formik
-        initialValues={{
-          username: '',
-          password: '',
-        }}
-        onSubmit={(values: ISignUpForm, actions) => {
-          registerNewUser(values, actions.resetForm);
-          setTimeout(() => {
-            actions.setSubmitting(false);
-          }, 500);
-        }}
-        validationSchema={Yup.object().shape({
-          username: Yup.string().required('Please enter username'),
-          password: Yup.string()
-            .matches(
-              /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()]).{8,20}\S$/
-            )
-            .required(
-              'Please valid password. One uppercase, one lowercase, one special character and no spaces'
-            ),
-        })}
-      >
-        {(props: FormikProps<ISignUpForm>) => {
-          const {
-            values,
-            touched,
-            errors,
-            handleBlur,
-            handleChange,
-            isSubmitting,
-          } = props;
-          return (
-            <Form>
-              <h1 className={classes.title}>Sign up</h1>
-              <Grid container justify="space-around" direction="row">
-                <Grid
-                  item
-                  lg={10}
-                  md={10}
-                  sm={10}
-                  xs={10}
-                  className={classes.textField}
-                >
-                  <TextField
-                    name="username"
-                    id="username"
-                    label="Username"
-                    value={values.username}
-                    type="text"
-                    helperText={
-                      errors.username && touched.username
-                        ? errors.username
-                        : 'Enter your username.'
-                    }
-                    error={errors.username && touched.username ? true : false}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                  />
-                </Grid>
-                <Grid
-                  item
-                  lg={10}
-                  md={10}
-                  sm={10}
-                  xs={10}
-                  className={classes.textField}
-                >
-                  <TextField
-                    name="password"
-                    id="password"
-                    label="Password"
-                    value={values.password}
-                    type="password"
-                    helperText={
-                      errors.password && touched.password
-                        ? 'Please valid password. One uppercase, one lowercase, one special character and no spaces'
-                        : 'One uppercase, one lowercase, one special character and no spaces'
-                    }
-                    error={errors.password && touched.password ? true : false}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                  />
-                </Grid>
-                <Grid
-                  item
-                  lg={10}
-                  md={10}
-                  sm={10}
-                  xs={10}
-                  className={classes.submitButton}
-                >
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="secondary"
-                    disabled={isSubmitting}
+    <div>
+      WELCOME TO TASK AVENUE!
+      <div className={classes.root}>
+        <Formik
+          initialValues={{
+            username: '',
+            password: '',
+          }}
+          onSubmit={(values: ISignUpForm, actions) => {
+            registerNewUser(values, actions.resetForm);
+            setTimeout(() => {
+              actions.setSubmitting(false);
+            }, 500);
+          }}
+          validationSchema={Yup.object().shape({
+            username: Yup.string().required('Please enter username'),
+            password: Yup.string()
+              .matches(
+                /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()]).{8,20}\S$/
+              )
+              .required(
+                'Please valid password. One uppercase, one lowercase, one special character and no spaces'
+              ),
+          })}
+        >
+          {(props: FormikProps<ISignUpForm>) => {
+            const {
+              values,
+              touched,
+              errors,
+              handleBlur,
+              handleChange,
+              isSubmitting,
+            } = props;
+            return (
+              <Form>
+                <h1 className={classes.title}>Sign up</h1>
+                <Grid container justify="space-around" direction="row">
+                  <Grid
+                    item
+                    lg={10}
+                    md={10}
+                    sm={10}
+                    xs={10}
+                    className={classes.textField}
                   >
-                    Submit
-                  </Button>
-                  {displayFormStatus && (
-                    <div className="formStatus">
-                      {formStatus.type === 'error' ? (
-                        <p className={classes.errorMessage}>
-                          {formStatus.message}
-                        </p>
-                      ) : formStatus.type === 'success' ? (
-                        <p className={classes.successMessage}>
-                          {formStatus.message}
-                        </p>
-                      ) : null}
-                    </div>
-                  )}
+                    <TextField
+                      id="username"
+                      label="Username"
+                      variant="outlined"
+                      name="username"
+                      value={values.username}
+                      type="text"
+                      helperText={
+                        errors.username && touched.username
+                          ? errors.username
+                          : 'Enter your username.'
+                      }
+                      error={errors.username && touched.username ? true : false}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
+                  </Grid>
+                  <Grid
+                    item
+                    lg={10}
+                    md={10}
+                    sm={10}
+                    xs={10}
+                    className={classes.textField}
+                  >
+                    <TextField
+                      name="password"
+                      id="password"
+                      label="Password"
+                      variant="outlined"
+                      value={values.password}
+                      type="password"
+                      helperText={
+                        errors.password && touched.password
+                          ? 'Please valid password. One uppercase, one lowercase, one special character and no spaces'
+                          : 'One uppercase, one lowercase, one special character and no spaces'
+                      }
+                      error={errors.password && touched.password ? true : false}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
+                  </Grid>
+                  <Grid
+                    item
+                    lg={10}
+                    md={10}
+                    sm={10}
+                    xs={10}
+                    className={classes.submitButton}
+                  >
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="secondary"
+                      disabled={isSubmitting}
+                    >
+                      Submit
+                    </Button>
+                    {displayFormStatus && (
+                      <div className="formStatus">
+                        {formStatus.type === 'error' ? (
+                          <p className={classes.errorMessage}>
+                            {formStatus.message}
+                          </p>
+                        ) : formStatus.type === 'success' ? (
+                          <p className={classes.successMessage}>
+                            {formStatus.message}
+                          </p>
+                        ) : null}
+                      </div>
+                    )}
+                  </Grid>
                 </Grid>
-              </Grid>
-            </Form>
-          );
-        }}
-      </Formik>
+              </Form>
+            );
+          }}
+        </Formik>
+      </div>
     </div>
   );
 };

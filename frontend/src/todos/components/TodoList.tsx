@@ -7,6 +7,7 @@ import AuthService from '../../services/auth-service';
 import { useParams } from 'react-router-dom';
 import Pusher from 'pusher-js';
 import { TextField, Button } from '@material-ui/core';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import axios from 'axios';
 import './TodoList.css';
 import { Formik, Form } from 'formik';
@@ -19,6 +20,8 @@ interface Values {
 const TodoList: React.FC = () => {
   const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
   const [listName, setListName] = useState('');
+  const [copied, setCopied] = useState(false);
+  const [value, setValue] = useState('');
   const [todos, setTodos] = useState([]);
 
   let { id } = useParams<{ id: string }>();
@@ -84,6 +87,16 @@ const TodoList: React.FC = () => {
 
   return (
     <div className="todolist-container">
+      Sharing url:
+      <CopyToClipboard
+        text={window.location.href}
+        onCopy={() => setCopied(true)}
+      >
+        <Button className="clipboard-btn">{window.location.href}</Button>
+      </CopyToClipboard>
+      {copied ? (
+        <span style={{ color: 'green' }}>Copied to clipboard!</span>
+      ) : null}
       <h1 className="listHeader">{listName}</h1>
       <Formik
         initialValues={{ name: '', description: '' }}
@@ -112,11 +125,17 @@ const TodoList: React.FC = () => {
                 onBlur={handleBlur}
               />
             </div>
-            <Button type="submit">Add</Button>
+            <Button
+              style={{ marginTop: '12px', marginBottom: '20px' }}
+              variant="contained"
+              color="primary"
+              type="submit"
+            >
+              Add Item
+            </Button>
           </Form>
         )}
       </Formik>
-
       <ul className="todo-list">
         {todos.map((todo) => {
           return (

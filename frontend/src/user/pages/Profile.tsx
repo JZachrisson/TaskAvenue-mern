@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../../shared/context/auth-context';
 import { TextField, Button } from '@material-ui/core';
 import { Formik, Form } from 'formik';
@@ -21,9 +21,20 @@ const newList = async (history: any, values: Values, user: string) => {
   history.push(`/list/${list.data.todoList.listId}`);
 };
 
-const Profile = () => {
+const Profile: React.FC = () => {
   const auth = useContext(AuthContext);
+  const [lists, setLists] = useState([]);
   const history = useHistory();
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8080/api/todolists/user/${auth.username}`)
+      .then((response) => {
+        console.log(response);
+        setLists(response.data.lists);
+        console.log(response.data.lists);
+      });
+  }, []);
 
   return (
     <div>
@@ -51,6 +62,13 @@ const Profile = () => {
           </Form>
         )}
       </Formik>
+
+      <h1>My lists</h1>
+      <ul>
+        {lists.map((list) => {
+          return <li>{list.name}</li>;
+        })}
+      </ul>
     </div>
   );
 };

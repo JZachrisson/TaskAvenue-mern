@@ -1,9 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { addTodo, deleteTodo, toggleCompletedTodo } from '../../services/API';
 import TodoItem from './TodoItem';
-import AuthService from '../../services/auth-service';
+import { AuthContext } from '../../shared/context/auth-context';
 import { useParams } from 'react-router-dom';
 import Pusher from 'pusher-js';
 import { TextField, Button } from '@material-ui/core';
@@ -18,16 +17,15 @@ interface Values {
 }
 
 const TodoList: React.FC = () => {
-  const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
+  const auth = useContext(AuthContext);
   const [listName, setListName] = useState('');
   const [copied, setCopied] = useState(false);
-  const [value, setValue] = useState('');
   const [todos, setTodos] = useState([]);
 
   let { id } = useParams<{ id: string }>();
 
   const submitTodo = (values: Values) => {
-    addTodo(values, currentUser.username, id);
+    addTodo(values, auth.username, id);
   };
 
   useEffect(() => {

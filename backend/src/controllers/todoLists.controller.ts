@@ -2,12 +2,31 @@ import { Response, Request } from 'express';
 import { ITodoList } from '../types/todoList';
 import TodoList from '../models/todoList';
 
+export const getTodoListsByUser = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const user = req.params.user;
+
+  let lists;
+  try {
+    lists = await TodoList.find({ creator: user });
+    res.json({
+      lists: lists.map(
+        (list: { toObject: (arg0: { getters: boolean }) => void }) =>
+          list.toObject({ getters: true })
+      ),
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getTodoListbyId = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   const listId = req.params.lid;
-  console.log('LIST ID', listId);
   let list;
   try {
     list = await TodoList.findOne({ listId: listId });

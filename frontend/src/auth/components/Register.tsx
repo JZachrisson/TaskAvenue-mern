@@ -1,91 +1,227 @@
-import React, { Component } from 'react';
-
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import {
+  Grid,
+  TextField,
+  Button,
+  makeStyles,
+  createStyles,
+  Theme,
+} from '@material-ui/core';
+import { Formik, Form, FormikProps } from 'formik';
 import AuthService from '../../services/auth-service';
+import * as Yup from 'yup';
 
-export default class Register extends Component<any, any> {
-  constructor(props: any) {
-    super(props);
-    this.handleRegister = this.handleRegister.bind(this);
-    this.onChangeUsername = this.onChangeUsername.bind(this);
-    this.onChangePassword = this.onChangePassword.bind(this);
-
-    this.state = {
-      username: '',
-      password: '',
-    };
-  }
-
-  onChangeUsername(e: any) {
-    this.setState({
-      username: e.target.value,
-    });
-  }
-
-  onChangePassword(e: any) {
-    this.setState({
-      password: e.target.value,
-    });
-  }
-
-  handleRegister(e: any) {
-    e.preventDefault();
-
-    this.setState({
-      message: '',
-      successful: false,
-    });
-
-    AuthService.register(this.state.username, this.state.password).then(
-      (response) => {
-        console.log(response);
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      maxWidth: '450px',
+      display: 'block',
+      margin: '0 auto',
+    },
+    textField: {
+      '& > *': {
+        width: '100%',
       },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }
+    },
+    submitButton: {
+      marginTop: '24px',
+    },
+    title: { textAlign: 'center' },
+    successMessage: { color: 'green' },
+    errorMessage: { color: 'red' },
+  })
+);
 
-  render() {
-    return (
-      <div className="col-md-12">
-        <div className="card card-container">
-          <img
-            src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-            alt="profile-img"
-            className="profile-img-card"
-          />
-
-          <form onSubmit={this.handleRegister}>
-            <div>
-              <div className="form-group">
-                <label htmlFor="username">Username</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="username"
-                  value={this.state.username}
-                  onChange={this.onChangeUsername}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <input
-                  type="password"
-                  className="form-control"
-                  name="password"
-                  value={this.state.password}
-                  onChange={this.onChangePassword}
-                />
-              </div>
-
-              <div className="form-group">
-                <button className="btn btn-primary btn-block">Sign Up</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    );
-  }
+interface ISignUpForm {
+  username: string;
+  password: string;
 }
+
+interface IFormStatus {
+  message: string;
+  type: string;
+}
+
+interface IFormStatusProps {
+  [key: string]: IFormStatus;
+}
+
+const formStatusProps: IFormStatusProps = {
+  success: {
+    message: 'Signed up successfully. Please go to login page.',
+    type: 'success',
+  },
+  duplicate: {
+    message: 'username already exist. Please use different username.',
+    type: 'error',
+  },
+  error: {
+    message: 'Something went wrong. Please try again.',
+    type: 'error',
+  },
+};
+
+const Register: React.FunctionComponent = () => {
+  const history = useHistory();
+  const classes = useStyles();
+  const [displayFormStatus, setDisplayFormStatus] = useState(false);
+  const [formStatus, setFormStatus] = useState<IFormStatus>({
+    message: '',
+    type: '',
+  });
+
+  const registerNewUser = (data: ISignUpForm, resetForm: Function) => {
+    try {
+      // API call integration will be here. Handle success / error response accordingly.
+      if (data) {
+        console.log(data);
+        AuthService.register(data.username, data.password).then(
+          (response) => {
+            console.log(response);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+        setFormStatus(formStatusProps.success);
+        resetForm({});
+        // history.push('/login');
+      }
+    } catch (error) {
+      const response = error.response;
+      if (response.data === 'user already exist' && response.status === 400) {
+        setFormStatus(formStatusProps.duplicate);
+      } else {
+        setFormStatus(formStatusProps.error);
+      }
+    } finally {
+      setDisplayFormStatus(true);
+    }
+  };
+
+  return (
+    <div className={classes.root}>
+      <Formik
+        initialValues={{
+          username: '',
+          password: '',
+        }}
+        onSubmit={(values: ISignUpForm, actions) => {
+          registerNewUser(values, actions.resetForm);
+          setTimeout(() => {
+            actions.setSubmitting(false);
+          }, 500);
+        }}
+        validationSchema={Yup.object().shape({
+          username: Yup.string().required('Please enter username'),
+          password: Yup.string()
+            .matches(
+              /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()]).{8,20}\S$/
+            )
+            .required(
+              'Please valid password. One uppercase, one lowercase, one special character and no spaces'
+            ),
+        })}
+      >
+        {(props: FormikProps<ISignUpForm>) => {
+          const {
+            values,
+            touched,
+            errors,
+            handleBlur,
+            handleChange,
+            isSubmitting,
+          } = props;
+          return (
+            <Form>
+              <h1 className={classes.title}>Sign up</h1>
+              <Grid container justify="space-around" direction="row">
+                <Grid
+                  item
+                  lg={10}
+                  md={10}
+                  sm={10}
+                  xs={10}
+                  className={classes.textField}
+                >
+                  <TextField
+                    name="username"
+                    id="username"
+                    label="Username"
+                    value={values.username}
+                    type="text"
+                    helperText={
+                      errors.username && touched.username
+                        ? errors.username
+                        : 'Enter your username.'
+                    }
+                    error={errors.username && touched.username ? true : false}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                </Grid>
+                <Grid
+                  item
+                  lg={10}
+                  md={10}
+                  sm={10}
+                  xs={10}
+                  className={classes.textField}
+                >
+                  <TextField
+                    name="password"
+                    id="password"
+                    label="Password"
+                    value={values.password}
+                    type="password"
+                    helperText={
+                      errors.password && touched.password
+                        ? 'Please valid password. One uppercase, one lowercase, one special character and no spaces'
+                        : 'One uppercase, one lowercase, one special character and no spaces'
+                    }
+                    error={errors.password && touched.password ? true : false}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                </Grid>
+                <Grid
+                  item
+                  lg={10}
+                  md={10}
+                  sm={10}
+                  xs={10}
+                  className={classes.submitButton}
+                >
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="secondary"
+                    disabled={isSubmitting}
+                  >
+                    Submit
+                  </Button>
+                  {displayFormStatus && (
+                    <div className="formStatus">
+                      {formStatus.type === 'error' ? (
+                        <p className={classes.errorMessage}>
+                          {formStatus.message}
+                        </p>
+                      ) : formStatus.type === 'success' ? (
+                        <p className={classes.successMessage}>
+                          {formStatus.message}
+                        </p>
+                      ) : null}
+                    </div>
+                  )}
+                </Grid>
+              </Grid>
+            </Form>
+          );
+        }}
+      </Formik>
+    </div>
+  );
+};
+
+export default Register;

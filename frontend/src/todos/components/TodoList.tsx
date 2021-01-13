@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { addTodo, deleteTodo, toggleCompletedTodo } from '../../services/API';
 import TodoItem from './TodoItem';
 import AuthService from '../../services/auth-service';
@@ -16,7 +16,7 @@ interface Values {
   description: string;
 }
 
-const TodoList = () => {
+const TodoList: React.FC = () => {
   const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
   const [listName, setListName] = useState('');
   const [todos, setTodos] = useState([]);
@@ -121,6 +121,7 @@ const TodoList = () => {
         {todos.map((todo) => {
           return (
             <TodoItem
+              key={todo._id}
               todo={todo}
               deleteTodo={deleteTodo}
               toggleCompletedTodo={toggleCompletedTodo}

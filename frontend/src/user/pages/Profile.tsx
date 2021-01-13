@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from 'react';
-import AuthService from '../../services/auth-service';
+import React, { useContext } from 'react';
+import { AuthContext } from '../../shared/context/auth-context';
 import { TextField, Button } from '@material-ui/core';
 import { Formik, Form } from 'formik';
 import { useHistory } from 'react-router-dom';
@@ -22,9 +22,7 @@ const newList = async (history: any, values: Values, user: string) => {
 };
 
 const Profile = () => {
-  const [listName, setListName] = useState('');
-  const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
-
+  const auth = useContext(AuthContext);
   const history = useHistory();
 
   return (
@@ -32,7 +30,7 @@ const Profile = () => {
       <Formik
         initialValues={{ title: '' }}
         onSubmit={(values, { resetForm }) => {
-          newList(history, values, currentUser.username);
+          newList(history, values, auth.username);
           resetForm();
         }}
       >

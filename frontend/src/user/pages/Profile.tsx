@@ -3,7 +3,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../../shared/context/auth-context';
 import { TextField, Button } from '@material-ui/core';
 import { Formik, Form } from 'formik';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 
@@ -66,7 +66,11 @@ const Profile: React.FC = () => {
       <h1>My lists</h1>
       <ul>
         {lists.map((list) => {
-          return <li>{list.name}</li>;
+          return (
+            <li>
+              <Link to={`/list/${list.listId}`}>{list.name}</Link>
+            </li>
+          );
         })}
       </ul>
     </div>

@@ -6,6 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import { AuthContext } from '../../../shared/context/auth-context';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   navbar: {
@@ -24,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header() {
   const auth = useContext(AuthContext);
+  const history = useHistory();
 
   const classes = useStyles();
 
@@ -46,6 +48,7 @@ export default function Header() {
                 color="inherit"
                 onClick={() => {
                   auth.logout();
+                  history.push('/login');
                   window.location.reload();
                 }}
               >

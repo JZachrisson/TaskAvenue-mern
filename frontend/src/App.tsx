@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -16,18 +17,6 @@ import TodoList from './todos/components/TodoList';
 const App = () => {
   const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
   console.log('currentuser in app', currentUser);
-
-  // useEffect(() => {
-  //   const user = AuthService.getCurrentUser();
-
-  //   if (user) {
-  //     setCurrentUser(user);
-  //   }
-  // }, []);
-
-  // const logOut = () => {
-  //   AuthService.logout();
-  // };
 
   return (
     <AuthContext.Provider

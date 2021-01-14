@@ -21,6 +21,22 @@ export const addTodo = async (
   }
 };
 
+export const editTodo = async (
+  _id: string,
+  name: string,
+  description: string
+): Promise<void> => {
+  try {
+    const editedTodo = {
+      name: name,
+      description: description,
+    };
+    await axios.put(`${baseUrl}todoitems/edit/${_id}`, editedTodo);
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
 export const toggleCompletedTodo = async (_id: string): Promise<void> => {
   try {
     const completedTodo: void = await axios.put(

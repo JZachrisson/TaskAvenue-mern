@@ -3,6 +3,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../../shared/context/auth-context';
 import { TextField, Button } from '@material-ui/core';
 import { Formik, Form } from 'formik';
+import * as Yup from 'yup';
 import { useHistory, Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
@@ -42,12 +43,16 @@ const Profile: React.FC = () => {
           newList(history, values, auth.username);
           resetForm();
         }}
+        validationSchema={Yup.object().shape({
+          title: Yup.string().required('Please enter a title'),
+        })}
       >
         {({ values, handleChange, handleBlur }) => (
           <Form>
             <div>
               <TextField
                 placeholder="Title"
+                required
                 name="title"
                 value={values.title}
                 onChange={handleChange}
@@ -70,7 +75,7 @@ const Profile: React.FC = () => {
         <ul>
           {lists.map((list) => {
             return (
-              <li>
+              <li key={list.listId}>
                 <Link to={`/list/${list.listId}`}>{list.name}</Link>
               </li>
             );

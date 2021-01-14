@@ -74,7 +74,6 @@ const Register: React.FunctionComponent = () => {
 
   const registerNewUser = (data: ISignUpForm, resetForm: Function) => {
     try {
-      // API call integration will be here. Handle success / error response accordingly.
       if (data) {
         AuthService.register(
           data.username,
@@ -128,7 +127,7 @@ const Register: React.FunctionComponent = () => {
                 /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()]).{8,20}\S$/
               )
               .required(
-                'Please valid password. One uppercase, one lowercase, one special character and no spaces'
+                'Please enter a valid password. One uppercase, one lowercase, one special character and no spaces'
               ),
             firstName: Yup.string().required('Please enter first name'),
             lastName: Yup.string().required('Please enter last name'),
@@ -183,6 +182,11 @@ const Register: React.FunctionComponent = () => {
                       value={values.password}
                       type="password"
                       error={errors.password && touched.password ? true : false}
+                      helperText={
+                        errors.password && touched.password
+                          ? 'Please enter a valid password. One uppercase, one lowercase, one special character and no spaces'
+                          : 'One uppercase, one lowercase, one special character and no spaces'
+                      }
                       onChange={handleChange}
                       onBlur={handleBlur}
                     />

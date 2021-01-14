@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
     textField: {
       '& > *': {
         width: '100%',
+        marginTop: '15px',
       },
     },
     submitButton: {
@@ -49,12 +50,8 @@ interface IFormStatusProps {
 
 const formStatusProps: IFormStatusProps = {
   success: {
-    message: 'Signed up successfully. Please go to login page.',
+    message: 'Successfully logged in.',
     type: 'success',
-  },
-  duplicate: {
-    message: 'username already exist. Please use different username.',
-    type: 'error',
   },
   error: {
     message: 'Something went wrong. Please try again.',
@@ -72,31 +69,19 @@ const Login: React.FunctionComponent = () => {
   });
 
   const registerNewUser = (data: ILoginForm, resetForm: Function) => {
-    try {
-      console.log('DATA from login', data);
-      // API call integration will be here. Handle success / error response accordingly.
-      if (data) {
-        AuthService.login(data.username, data.password).then(() => {
-          history.push('/profile');
-          window.location.reload();
-        });
+    AuthService.login(data.username, data.password)
+      .then(() => {
+        history.push('/profile');
+        window.location.reload();
 
         setFormStatus(formStatusProps.success);
         resetForm({});
-      }
-    } catch (error) {
-      console.log('ERROR from login', error);
-      const response = error.response;
-      if (response.data === 'user already exist' && response.status === 400) {
-        setFormStatus(formStatusProps.duplicate);
-      } else {
+      })
+      .catch((error) => {
         setFormStatus(formStatusProps.error);
-      }
-    } finally {
-      setDisplayFormStatus(true);
-    }
+      })
+      .finally(() => setDisplayFormStatus(true));
   };
-
   return (
     <div className={classes.root}>
       <Formik
@@ -112,13 +97,7 @@ const Login: React.FunctionComponent = () => {
         }}
         validationSchema={Yup.object().shape({
           username: Yup.string().required('Please enter username'),
-          password: Yup.string()
-            .matches(
-              /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()]).{8,20}\S$/
-            )
-            .required(
-              'Please valid password. One uppercase, one lowercase, one special character and no spaces'
-            ),
+          password: Yup.string().required('Please enter password'),
         })}
       >
         {(props: FormikProps<ILoginForm>) => {
@@ -149,11 +128,6 @@ const Login: React.FunctionComponent = () => {
                     label="Username"
                     value={values.username}
                     type="text"
-                    helperText={
-                      errors.username && touched.username
-                        ? errors.username
-                        : 'Enter your username.'
-                    }
                     error={errors.username && touched.username ? true : false}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -174,11 +148,6 @@ const Login: React.FunctionComponent = () => {
                     label="Password"
                     value={values.password}
                     type="password"
-                    helperText={
-                      errors.password && touched.password
-                        ? 'Please valid password. One uppercase, one lowercase, one special character and no spaces'
-                        : 'One uppercase, one lowercase, one special character and no spaces'
-                    }
                     error={errors.password && touched.password ? true : false}
                     onChange={handleChange}
                     onBlur={handleBlur}

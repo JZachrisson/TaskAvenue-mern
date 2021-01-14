@@ -15,8 +15,11 @@ class AuthService {
         }
 
         return response.data;
-      })
-      .catch((error) => console.group(error));
+      });
+    // .catch((error) => {
+    //   return error;
+    //   // console.log('ERROR HERE', error);
+    // });
   }
 
   logout() {

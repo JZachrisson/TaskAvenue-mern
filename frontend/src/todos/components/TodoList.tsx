@@ -1,6 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useContext } from 'react';
-import { addTodo, deleteTodo, toggleCompletedTodo } from '../../services/API';
+import {
+  addTodo,
+  deleteTodo,
+  toggleCompletedTodo,
+  editTodo,
+} from '../../services/API';
 import TodoItem from './TodoItem';
 import { AuthContext } from '../../shared/context/auth-context';
 import { useParams } from 'react-router-dom';
@@ -111,12 +116,13 @@ const TodoList: React.FC = () => {
                 name="name"
                 value={values.name}
                 onChange={handleChange}
+                required
                 onBlur={handleBlur}
               />
             </div>
             <div>
               <TextField
-                placeholder="Description"
+                placeholder="Description (Optional)"
                 name="description"
                 value={values.description}
                 onChange={handleChange}
@@ -140,6 +146,7 @@ const TodoList: React.FC = () => {
             <TodoItem
               key={todo._id}
               todo={todo}
+              editTodo={editTodo}
               deleteTodo={deleteTodo}
               toggleCompletedTodo={toggleCompletedTodo}
             />

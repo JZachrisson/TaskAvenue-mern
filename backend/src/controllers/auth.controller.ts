@@ -6,11 +6,16 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
 export const signup = (req: Request, res: Response): void => {
-  const body = req.body as Pick<IUser, 'username' | 'password'>;
+  const body = req.body as Pick<
+    IUser,
+    'username' | 'password' | 'firstName' | 'lastName'
+  >;
 
   const user: IUser = new User({
     username: body.username,
     password: bcrypt.hashSync(body.password, 8),
+    firstName: body.firstName,
+    lastName: body.lastName,
   });
 
   user.save((error: Error, user: IUser) => {
@@ -29,7 +34,14 @@ export const signin = (req: Request, res: Response): void => {
   }).exec(
     (
       error: Error,
-      user: { password: string; id: string; _id: string; username: string }
+      user: {
+        password: string;
+        id: string;
+        _id: string;
+        username: string;
+        firstName: string;
+        lastName: string;
+      }
     ) => {
       if (error) {
         res.status(500).send({ message: error });
@@ -37,7 +49,8 @@ export const signin = (req: Request, res: Response): void => {
       }
 
       if (!user) {
-        return res.status(404).send({ message: 'User Not found.' });
+        res.status(404).send({ message: 'User Not found.' });
+        return;
       }
 
       const passwordIsValid = bcrypt.compareSync(
@@ -59,6 +72,8 @@ export const signin = (req: Request, res: Response): void => {
       res.status(200).send({
         id: user._id,
         username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
         accessToken: token,
       });
     }

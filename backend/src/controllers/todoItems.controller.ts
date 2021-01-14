@@ -2,7 +2,6 @@ import { Response, Request } from 'express';
 import { ITodoItem } from '../types/todoItem';
 import TodoList from '../models/todoList';
 import TodoItem from '../models/todoItem';
-import todoItem from '../models/todoItem';
 
 export const getTodoItemById = async (
   req: Request,
@@ -17,7 +16,6 @@ export const getTodoItemById = async (
     console.log(error);
   }
 
-  // res.json({ item: item.toObject({ getters: true }) });
   res.json({ item: item });
 };
 
@@ -88,6 +86,24 @@ export const toggleCompletedTodo = async (
 
     res.status(201).json({
       message: 'Todo updated',
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const editTodo = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const editedTodo: ITodoItem | null = await TodoItem.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+      }
+    );
+    res.status(201).json({
+      message: 'Todo edited!',
+      todo: editedTodo,
     });
   } catch (error) {
     console.log(error);

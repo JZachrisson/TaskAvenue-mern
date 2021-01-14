@@ -5,6 +5,7 @@ import {
   getTodoItemById,
   deleteTodo,
   toggleCompletedTodo,
+  editTodo,
 } from '../controllers/todoItems.controller';
 
 const router: Router = Router();
@@ -17,5 +18,6 @@ router.post('/', createTodoItem);
 router.delete('/:id', deleteTodo);
 
 router.put('/toggle/:id', toggleCompletedTodo);
+router.put('/edit/:id', editTodo);
 
 export default router;

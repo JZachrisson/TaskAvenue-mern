@@ -13,6 +13,7 @@ const todoListSchema: Schema = new Schema(
     },
     creator: {
       type: String,
+      required: true,
     },
     items: [{ type: Types.ObjectId, ref: 'TodoItem' }],
   },

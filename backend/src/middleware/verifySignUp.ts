@@ -17,6 +17,7 @@ export const checkDuplicateUsername = (
 
     if (user) {
       res.status(400).send({ message: 'Failed! Username already in use!' });
+      return;
     }
     next();
   });

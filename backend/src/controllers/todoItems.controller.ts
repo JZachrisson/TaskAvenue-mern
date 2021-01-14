@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Response, Request } from 'express';
 import { ITodoItem } from '../types/todoItem';
 import TodoList from '../models/todoList';

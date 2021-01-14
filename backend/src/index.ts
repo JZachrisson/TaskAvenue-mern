@@ -11,6 +11,7 @@ const PORT: string | number = process.env.PORT || 8080;
 
 import todoListsRoutes from './routes/todoLists.routes';
 import todoItemsRoutes from './routes/todoItems.routes';
+import authRoutes from './routes/auth.routes';
 
 const corsOptions = {
   origin: 'http://localhost:3000',
@@ -20,7 +21,7 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-require('./routes/auth.routes')(app);
+app.use('/api/auth', authRoutes);
 app.use('/api/todolists', todoListsRoutes);
 app.use('/api/todoitems', todoItemsRoutes);
 
@@ -60,6 +61,7 @@ db.once('open', () => {
       });
     } else {
       console.log('Error triggering pusher');
+      return;
     }
   });
 
@@ -67,7 +69,6 @@ db.once('open', () => {
   const itemsChangeStream = itemsCollection.watch();
 
   itemsChangeStream.on('change', (change) => {
-    console.log('ITEMS CHANGED', change);
     if (change.operationType === 'delete') {
       console.log('ITEM DELETED');
       pusher.trigger('todoitems', 'deleted', {
@@ -80,6 +81,7 @@ db.once('open', () => {
       });
     } else {
       console.log('Error triggering pusher');
+      return;
     }
   });
 });

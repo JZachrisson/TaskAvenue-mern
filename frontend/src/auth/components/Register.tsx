@@ -73,6 +73,7 @@ const Register: React.FunctionComponent = () => {
   });
 
   const registerNewUser = (data: ISignUpForm, resetForm: Function) => {
+    console.log('DATA AT THE TOP', data);
     try {
       if (data) {
         AuthService.register(
@@ -82,16 +83,18 @@ const Register: React.FunctionComponent = () => {
           data.lastName
         ).then(
           (response) => {
-            console.log(response);
+            console.log('RESPONSE 1', response);
+            //console.log(response);
           },
           (error) => {
-            console.log(error);
+            console.log('ERROR1', error);
           }
         );
         setFormStatus(formStatusProps.success);
         resetForm({});
       }
     } catch (error) {
+      console.log('ERROR CAUGHT!', error);
       const response = error.response;
       if (response.data === 'user already exist' && response.status === 400) {
         setFormStatus(formStatusProps.duplicate);

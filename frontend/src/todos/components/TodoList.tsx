@@ -129,6 +129,10 @@ const TodoList: React.FC = () => {
                 onBlur={handleBlur}
               />
             </div>
+            <div>
+              warning: please do not store any sensitive information in this
+              list, it is not secure
+            </div>
             <Button
               style={{ marginTop: '12px', marginBottom: '20px' }}
               variant="contained"

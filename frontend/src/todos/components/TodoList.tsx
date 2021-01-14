@@ -90,17 +90,21 @@ const TodoList: React.FC = () => {
 
   return (
     <div className="todolist-container">
-      Share URL:
       <CopyToClipboard
         text={window.location.href}
         onCopy={() => setCopied(true)}
       >
-        <Button className="clipboard-btn">{window.location.href}</Button>
+        <Button variant="contained" className="clipboard-btn">
+          {' '}
+          SHARE
+        </Button>
       </CopyToClipboard>
       {copied ? (
-        <span style={{ color: 'green' }}>Copied to clipboard!</span>
+        <span style={{ color: 'green' }}>URL copied to clipboard!</span>
       ) : null}
-      <h1 className="listHeader">{listName}</h1>
+      <div className="todolist-heading">
+        <h1 className="listHeader">{listName}</h1>
+      </div>
       <Formik
         initialValues={{ name: '', description: '' }}
         onSubmit={(values, { resetForm }) => {
@@ -129,12 +133,13 @@ const TodoList: React.FC = () => {
                 onBlur={handleBlur}
               />
             </div>
-            <div>
-              warning: please do not store any sensitive information in this
-              list, it is not secure
-            </div>
+
             <Button
-              style={{ marginTop: '12px', marginBottom: '20px' }}
+              style={{
+                marginTop: '12px',
+                marginBottom: '20px',
+                backgroundColor: '#792959',
+              }}
               variant="contained"
               color="primary"
               type="submit"

@@ -66,13 +66,13 @@ const TodoItem: React.FC<Props> = ({ todo }) => {
       <div className="todo-item-card">
         <div className="todo-item">
           <Checkbox
-            style={{ color: 'green', transform: 'scale(2)' }}
+            style={{ color: 'green', transform: 'scale(1.5)' }}
             checked={todo.status}
             onChange={() => toggleCompletedTodo(todo._id)}
           />
           <div>
             <div className="todo-item-text">
-              <h4 className={checkTodo}>{todo.name}</h4>
+              <h5 className={checkTodo}>{todo.name}</h5>
               {todo.description ? (
                 <p className={checkTodo}>{todo.description}</p>
               ) : (
@@ -88,22 +88,21 @@ const TodoItem: React.FC<Props> = ({ todo }) => {
           </div>
 
           <Button
-            style={{ marginRight: '10px' }}
-            variant="outlined"
             color="primary"
             onClick={() => setOpen(true)}
-            startIcon={<EditIcon />}
-          >
-            Edit
-          </Button>
+            startIcon={
+              <EditIcon style={{ fontSize: '30px', color: '#a75d8a' }} />
+            }
+          ></Button>
           <Button
-            variant="outlined"
             color="secondary"
             onClick={() => deleteTodo(todo._id)}
-            startIcon={<DeleteOutlineIcon />}
-          >
-            Delete
-          </Button>
+            startIcon={
+              <DeleteOutlineIcon
+                style={{ fontSize: '30px', color: '#a75d8a' }}
+              />
+            }
+          ></Button>
         </div>
       </div>
     </>

@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { AuthContext } from './shared/context/auth-context';
@@ -16,7 +21,40 @@ import TodoList from './todos/components/TodoList';
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
-  console.log('currentuser in app', currentUser);
+
+  let routes;
+
+  if (currentUser) {
+    routes = (
+      <Switch>
+        <Route path="/profile" exact>
+          <Profile />
+        </Route>
+        <Route path="/" exact>
+          <Home />
+        </Route>
+        <Route path="/list/:id" exact>
+          <TodoList />
+        </Route>
+        <Redirect to="/profile" />
+      </Switch>
+    );
+  } else {
+    routes = (
+      <Switch>
+        <Route path="/" exact>
+          <Home />
+        </Route>
+        <Route path="/login" exact>
+          <Login />
+        </Route>
+        <Route path="/register" exact>
+          <Register />
+        </Route>
+        <Redirect to="/login" />
+      </Switch>
+    );
+  }
 
   return (
     <AuthContext.Provider
@@ -24,6 +62,8 @@ const App = () => {
         isLoggedIn: !!currentUser?.accessToken,
         token: currentUser?.accessToken,
         username: currentUser?.username,
+        firstName: currentUser?.firstName,
+        lastName: currentUser?.lastName,
         userId: currentUser?.id,
         login: AuthService.login,
         logout: AuthService.logout,
@@ -32,25 +72,7 @@ const App = () => {
       <Router>
         <div className="App">
           <Header />
-          <main>
-            <Switch>
-              <Route path="/" exact>
-                <Home />
-              </Route>
-              <Route path="/list/:id" exact>
-                <TodoList />
-              </Route>
-              <Route path="/profile" exact>
-                <Profile />
-              </Route>
-              <Route path="/login" exact>
-                <Login />
-              </Route>
-              <Route path="/register" exact>
-                <Register />
-              </Route>
-            </Switch>
-          </main>
+          <main>{routes}</main>
         </div>
       </Router>
     </AuthContext.Provider>

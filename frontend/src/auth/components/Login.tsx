@@ -73,6 +73,7 @@ const Login: React.FunctionComponent = () => {
 
   const registerNewUser = (data: ILoginForm, resetForm: Function) => {
     try {
+      console.log('DATA from login', data);
       // API call integration will be here. Handle success / error response accordingly.
       if (data) {
         AuthService.login(data.username, data.password).then(() => {
@@ -84,6 +85,7 @@ const Login: React.FunctionComponent = () => {
         resetForm({});
       }
     } catch (error) {
+      console.log('ERROR from login', error);
       const response = error.response;
       if (response.data === 'user already exist' && response.status === 400) {
         setFormStatus(formStatusProps.duplicate);

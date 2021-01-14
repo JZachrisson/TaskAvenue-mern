@@ -1,6 +1,8 @@
 import React from 'react';
 import { deleteTodo, toggleCompletedTodo } from '../../services/API';
+
 import Button from '@material-ui/core/Button';
+import Avatar from '@material-ui/core/Avatar';
 
 import EditIcon from '@material-ui/icons/Edit';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -38,7 +40,10 @@ const TodoItem: React.FC<Props> = ({ todo }) => {
       </div>
 
       <div className="todo-item-info">
-        <span className="todo-item-creator">{todo.creator}</span>
+        <div style={{ display: 'inline-block', marginRight: '15px' }}>
+          {todo.creator}
+        </div>
+
         <Button
           style={{ marginRight: '10px' }}
           variant="outlined"

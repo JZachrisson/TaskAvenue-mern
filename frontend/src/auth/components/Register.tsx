@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import {
   Grid,
   TextField,
@@ -22,6 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
     textField: {
       '& > *': {
         width: '100%',
+        marginTop: '15px',
       },
     },
     submitButton: {
@@ -36,6 +36,8 @@ const useStyles = makeStyles((theme: Theme) =>
 interface ISignUpForm {
   username: string;
   password: string;
+  firstName: string;
+  lastName: string;
 }
 
 interface IFormStatus {
@@ -63,7 +65,6 @@ const formStatusProps: IFormStatusProps = {
 };
 
 const Register: React.FunctionComponent = () => {
-  const history = useHistory();
   const classes = useStyles();
   const [displayFormStatus, setDisplayFormStatus] = useState(false);
   const [formStatus, setFormStatus] = useState<IFormStatus>({
@@ -75,8 +76,12 @@ const Register: React.FunctionComponent = () => {
     try {
       // API call integration will be here. Handle success / error response accordingly.
       if (data) {
-        console.log(data);
-        AuthService.register(data.username, data.password).then(
+        AuthService.register(
+          data.username,
+          data.password,
+          data.firstName,
+          data.lastName
+        ).then(
           (response) => {
             console.log(response);
           },
@@ -86,7 +91,6 @@ const Register: React.FunctionComponent = () => {
         );
         setFormStatus(formStatusProps.success);
         resetForm({});
-        // history.push('/login');
       }
     } catch (error) {
       const response = error.response;
@@ -108,6 +112,8 @@ const Register: React.FunctionComponent = () => {
           initialValues={{
             username: '',
             password: '',
+            firstName: '',
+            lastName: '',
           }}
           onSubmit={(values: ISignUpForm, actions) => {
             registerNewUser(values, actions.resetForm);
@@ -124,6 +130,8 @@ const Register: React.FunctionComponent = () => {
               .required(
                 'Please valid password. One uppercase, one lowercase, one special character and no spaces'
               ),
+            firstName: Yup.string().required('Please enter first name'),
+            lastName: Yup.string().required('Please enter last name'),
           })}
         >
           {(props: FormikProps<ISignUpForm>) => {
@@ -154,11 +162,6 @@ const Register: React.FunctionComponent = () => {
                       name="username"
                       value={values.username}
                       type="text"
-                      helperText={
-                        errors.username && touched.username
-                          ? errors.username
-                          : 'Enter your username.'
-                      }
                       error={errors.username && touched.username ? true : false}
                       onChange={handleChange}
                       onBlur={handleBlur}
@@ -179,12 +182,31 @@ const Register: React.FunctionComponent = () => {
                       variant="outlined"
                       value={values.password}
                       type="password"
-                      helperText={
-                        errors.password && touched.password
-                          ? 'Please valid password. One uppercase, one lowercase, one special character and no spaces'
-                          : 'One uppercase, one lowercase, one special character and no spaces'
-                      }
                       error={errors.password && touched.password ? true : false}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
+                    <TextField
+                      name="firstName"
+                      id="firstName"
+                      label="First Name"
+                      variant="outlined"
+                      value={values.firstName}
+                      type="text"
+                      error={
+                        errors.firstName && touched.firstName ? true : false
+                      }
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
+                    <TextField
+                      name="lastName"
+                      id="lastName"
+                      label="Last Name"
+                      variant="outlined"
+                      value={values.lastName}
+                      type="text"
+                      error={errors.lastName && touched.lastName ? true : false}
                       onChange={handleChange}
                       onBlur={handleBlur}
                     />

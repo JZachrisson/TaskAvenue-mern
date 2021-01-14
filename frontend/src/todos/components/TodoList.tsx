@@ -85,7 +85,7 @@ const TodoList: React.FC = () => {
 
   return (
     <div className="todolist-container">
-      Sharing url:
+      Share URL:
       <CopyToClipboard
         text={window.location.href}
         onCopy={() => setCopied(true)}

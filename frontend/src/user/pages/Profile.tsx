@@ -6,7 +6,7 @@ import { Formik, Form } from 'formik';
 import { useHistory, Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
-
+import './Profile.css';
 interface Values {
   title: string;
 }
@@ -30,9 +30,7 @@ const Profile: React.FC = () => {
     axios
       .get(`http://localhost:8080/api/todolists/user/${auth.username}`)
       .then((response) => {
-        console.log(response);
         setLists(response.data.lists);
-        console.log(response.data.lists);
       });
   }, []);
 
@@ -56,23 +54,29 @@ const Profile: React.FC = () => {
                 onBlur={handleBlur}
               />
             </div>
-            <Button variant="contained" color="primary" type="submit">
+            <Button
+              style={{ marginTop: '15px' }}
+              variant="contained"
+              color="primary"
+              type="submit"
+            >
               Create New List
             </Button>
           </Form>
         )}
       </Formik>
-
-      <h1>My lists</h1>
-      <ul>
-        {lists.map((list) => {
-          return (
-            <li>
-              <Link to={`/list/${list.listId}`}>{list.name}</Link>
-            </li>
-          );
-        })}
-      </ul>
+      <div className="profile-list-container">
+        <h1>My lists</h1>
+        <ul>
+          {lists.map((list) => {
+            return (
+              <li>
+                <Link to={`/list/${list.listId}`}>{list.name}</Link>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </div>
   );
 };

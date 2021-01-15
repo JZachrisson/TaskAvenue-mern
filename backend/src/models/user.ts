@@ -10,14 +10,6 @@ const userSchema: Schema = new Schema({
     type: String,
     required: true,
   },
-  firstName: {
-    type: String,
-    required: true,
-  },
-  lastName: {
-    type: String,
-    required: true,
-  },
 });
 
 export default model<IUser>('User', userSchema);

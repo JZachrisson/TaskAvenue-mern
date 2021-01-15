@@ -163,6 +163,7 @@ const Login: React.FunctionComponent = () => {
                 >
                   <Button
                     type="submit"
+                    style={{ backgroundColor: '#8a476f' }}
                     variant="contained"
                     color="secondary"
                     disabled={isSubmitting}

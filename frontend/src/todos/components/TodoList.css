@@ -3,7 +3,7 @@
   border-top: 2px solid #a75d8a;
   max-width: 600px;
   margin: 0 auto;
-  margin-top: 50px;
+  margin-top: 20px;
 }
 
 .listHeader {
@@ -18,15 +18,6 @@
   border-radius: 4px;
   margin-bottom: 20px;
 }
-
-/* .todolist-heading {
-  display: flex;
-  justify-content: center;
-} */
-
-/* .clipboard-btn {
-  float: right;
-} */
 
 .clipboard-btn:hover {
   background-color: rgb(145, 244, 145) !important;

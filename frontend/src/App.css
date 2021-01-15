@@ -6,6 +6,11 @@
 
 body {
   font-family: 'Roboto', sans-serif;
+  background-color: #f1f2f6;
+}
+
+.link:hover {
+  color: rgb(171, 171, 171) !important;
 }
 
 .App {

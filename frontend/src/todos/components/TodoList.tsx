@@ -90,18 +90,6 @@ const TodoList: React.FC = () => {
 
   return (
     <div className="todolist-container">
-      <CopyToClipboard
-        text={window.location.href}
-        onCopy={() => setCopied(true)}
-      >
-        <Button variant="contained" className="clipboard-btn">
-          {' '}
-          SHARE
-        </Button>
-      </CopyToClipboard>
-      {copied ? (
-        <span style={{ color: 'green' }}>URL copied to clipboard!</span>
-      ) : null}
       <div className="todolist-heading">
         <h1 className="listHeader">{listName}</h1>
       </div>
@@ -116,6 +104,7 @@ const TodoList: React.FC = () => {
           <Form>
             <div>
               <TextField
+                inputProps={{ maxLength: 15 }}
                 placeholder="Name"
                 name="name"
                 value={values.name}
@@ -127,6 +116,7 @@ const TodoList: React.FC = () => {
             <div>
               <TextField
                 placeholder="Description (Optional)"
+                inputProps={{ maxLength: 15 }}
                 name="description"
                 value={values.description}
                 onChange={handleChange}
@@ -137,7 +127,7 @@ const TodoList: React.FC = () => {
             <Button
               style={{
                 marginTop: '12px',
-                marginBottom: '20px',
+                marginBottom: '40px',
                 backgroundColor: '#792959',
               }}
               variant="contained"
@@ -149,6 +139,18 @@ const TodoList: React.FC = () => {
           </Form>
         )}
       </Formik>
+      <CopyToClipboard
+        text={window.location.href}
+        onCopy={() => setCopied(true)}
+      >
+        <Button variant="contained" className="clipboard-btn">
+          {' '}
+          SHARE LIST
+        </Button>
+      </CopyToClipboard>
+      {copied ? (
+        <span style={{ color: 'green' }}>URL copied to clipboard!</span>
+      ) : null}
       <ul className="todo-list">
         {todos.map((todo) => {
           return (

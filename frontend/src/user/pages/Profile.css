@@ -2,6 +2,10 @@
   margin-top: 50px;
 }
 
-.profile-list-container ul {
-  list-style: none;
+.profile-list-container h1 {
+  color: white;
+  background-color: #a75d8a;
+  font-size: 35px;
+  margin: 0 auto;
+  max-width: 360px;
 }

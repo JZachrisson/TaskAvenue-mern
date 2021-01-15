@@ -31,7 +31,7 @@ const App = () => {
           <Profile />
         </Route>
         <Route path="/" exact>
-          <Home />
+          <Profile />
         </Route>
         <Route path="/list/:id" exact>
           <TodoList />
@@ -51,7 +51,7 @@ const App = () => {
         <Route path="/register" exact>
           <Register />
         </Route>
-        <Redirect to="/login" />
+        <Redirect to="/" />
       </Switch>
     );
   }
@@ -62,8 +62,6 @@ const App = () => {
         isLoggedIn: !!currentUser?.accessToken,
         token: currentUser?.accessToken,
         username: currentUser?.username,
-        firstName: currentUser?.firstName,
-        lastName: currentUser?.lastName,
         userId: currentUser?.id,
         login: AuthService.login,
         logout: AuthService.logout,

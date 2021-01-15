@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { deleteTodo, toggleCompletedTodo, editTodo } from '../../services/API';
 import Modal from '@material-ui/core/Modal';
+import ListItem from '@material-ui/core/ListItem';
 import Button from '@material-ui/core/Button';
 import EditIcon from '@material-ui/icons/Edit';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -11,11 +12,26 @@ import './TodoItem.css';
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'absolute',
-    width: 400,
+    width: 350,
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 4),
+  },
+  listItem: {
+    width: '100%',
+    maxWidth: 900,
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginTop: '15px',
+    paddingLeft: '15px',
+    paddingRight: '15px',
+    paddingTop: '25px',
+    paddingBottom: '10px',
+    boxShadow: theme.shadows[5],
+    backgroundColor: theme.palette.background.paper,
   },
 }));
 
@@ -45,25 +61,39 @@ const TodoItem: React.FC<Props> = ({ todo }) => {
         onClose={() => setOpen(false)}
       >
         <div className={classes.paper}>
-          <h3>Edit</h3>
+          <h4>Edit Item</h4>
           <input
+            maxLength={15}
             value={name}
             style={{ marginBottom: '10px' }}
             placeholder={todo.name}
             onChange={(e) => setName(e.target.value)}
           />
           <input
+            maxLength={15}
             value={description}
             placeholder={todo.description}
             onChange={(e) => setDescription(e.target.value)}
           />
 
-          <Button onClick={() => editTodo(todo._id, name, description)}>
+          <Button
+            variant="contained"
+            style={{
+              backgroundColor: '#792959',
+              color: 'white',
+              marginTop: '10px',
+              display: 'block',
+            }}
+            onClick={() => {
+              editTodo(todo._id, name, description);
+              setOpen(false);
+            }}
+          >
             Submit
           </Button>
         </div>
       </Modal>
-      <div className="todo-item-card">
+      <ListItem button className={classes.listItem}>
         <div className="todo-item">
           <Checkbox
             style={{ color: 'green', transform: 'scale(1.5)' }}
@@ -104,7 +134,7 @@ const TodoItem: React.FC<Props> = ({ todo }) => {
             }
           ></Button>
         </div>
-      </div>
+      </ListItem>
     </>
   );
 };

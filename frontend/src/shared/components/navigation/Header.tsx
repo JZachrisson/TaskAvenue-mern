@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
   items: {
     color: 'white',
+    fontFamily: 'Bebas Neue',
   },
   customFont: {
     fontFamily: 'Bebas Neue',
@@ -34,17 +35,30 @@ export default function Header() {
       <AppBar>
         <Toolbar className={classes.navbar}>
           <Typography className={classes.customFont} variant="h1">
-            TaskAvenue
+            <NavLink
+              className="link"
+              style={{ color: 'white', textDecoration: 'none' }}
+              to="/"
+              exact
+            >
+              TaskAvenue
+            </NavLink>
           </Typography>
 
           {auth.isLoggedIn && (
             <div className={classes.items}>
               <IconButton color="inherit">
-                <NavLink className={classes.items} to="/profile" exact>
-                  Profile
+                <NavLink
+                  style={{ color: 'white', textDecoration: 'none' }}
+                  className={`${classes.items} link`}
+                  to="/profile"
+                  exact
+                >
+                  {auth.username}
                 </NavLink>
               </IconButton>
               <IconButton
+                className="link"
                 color="inherit"
                 onClick={() => {
                   auth.logout();
@@ -59,12 +73,22 @@ export default function Header() {
           {!auth.isLoggedIn && (
             <div className={classes.items}>
               <IconButton color="inherit">
-                <NavLink to="/login" exact>
+                <NavLink
+                  style={{ color: 'white', textDecoration: 'none' }}
+                  className={`${classes.items} link`}
+                  to="/login"
+                  exact
+                >
                   Login
                 </NavLink>
               </IconButton>
               <IconButton color="inherit">
-                <NavLink to="/register" exact>
+                <NavLink
+                  style={{ color: 'white', textDecoration: 'none' }}
+                  className={`${classes.items} link`}
+                  to="/register"
+                  exact
+                >
                   SignUp
                 </NavLink>
               </IconButton>

@@ -36,8 +36,6 @@ const useStyles = makeStyles((theme: Theme) =>
 interface ISignUpForm {
   username: string;
   password: string;
-  firstName: string;
-  lastName: string;
 }
 
 interface IFormStatus {
@@ -73,49 +71,34 @@ const Register: React.FunctionComponent = () => {
   });
 
   const registerNewUser = (data: ISignUpForm, resetForm: Function) => {
-    console.log('DATA AT THE TOP', data);
-    try {
-      if (data) {
-        AuthService.register(
-          data.username,
-          data.password,
-          data.firstName,
-          data.lastName
-        ).then(
-          (response) => {
-            console.log('RESPONSE 1', response);
-            //console.log(response);
-          },
-          (error) => {
-            console.log('ERROR1', error);
-          }
-        );
-        setFormStatus(formStatusProps.success);
-        resetForm({});
-      }
-    } catch (error) {
-      console.log('ERROR CAUGHT!', error);
-      const response = error.response;
-      if (response.data === 'user already exist' && response.status === 400) {
-        setFormStatus(formStatusProps.duplicate);
-      } else {
-        setFormStatus(formStatusProps.error);
-      }
-    } finally {
-      setDisplayFormStatus(true);
-    }
+    AuthService.register(data.username, data.password)
+      .then((response) => {
+        console.log('RESPONSE 1', response);
+        //console.log(response);
+      })
+      .catch((error) => {
+        console.log('ERROR CAUGHT!', error);
+        const response = error.response;
+        if (response.status === 400) {
+          console.log('HEJ?');
+          setFormStatus(formStatusProps.duplicate);
+        } else {
+          setFormStatus(formStatusProps.error);
+        }
+      })
+      .finally(() => {
+        setDisplayFormStatus(true);
+      });
+    resetForm({});
   };
 
   return (
     <div>
-      WELCOME TO TASK AVENUE!
       <div className={classes.root}>
         <Formik
           initialValues={{
             username: '',
             password: '',
-            firstName: '',
-            lastName: '',
           }}
           onSubmit={(values: ISignUpForm, actions) => {
             registerNewUser(values, actions.resetForm);
@@ -132,8 +115,6 @@ const Register: React.FunctionComponent = () => {
               .required(
                 'Please enter a valid password. One uppercase, one lowercase, one special character and no spaces'
               ),
-            firstName: Yup.string().required('Please enter first name'),
-            lastName: Yup.string().required('Please enter last name'),
           })}
         >
           {(props: FormikProps<ISignUpForm>) => {
@@ -158,6 +139,7 @@ const Register: React.FunctionComponent = () => {
                     className={classes.textField}
                   >
                     <TextField
+                      inputProps={{ maxLength: 15 }}
                       id="username"
                       label="Username"
                       variant="outlined"
@@ -178,6 +160,7 @@ const Register: React.FunctionComponent = () => {
                     className={classes.textField}
                   >
                     <TextField
+                      inputProps={{ maxLength: 10 }}
                       name="password"
                       id="password"
                       label="Password"
@@ -193,30 +176,6 @@ const Register: React.FunctionComponent = () => {
                       onChange={handleChange}
                       onBlur={handleBlur}
                     />
-                    <TextField
-                      name="firstName"
-                      id="firstName"
-                      label="First Name"
-                      variant="outlined"
-                      value={values.firstName}
-                      type="text"
-                      error={
-                        errors.firstName && touched.firstName ? true : false
-                      }
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                    <TextField
-                      name="lastName"
-                      id="lastName"
-                      label="Last Name"
-                      variant="outlined"
-                      value={values.lastName}
-                      type="text"
-                      error={errors.lastName && touched.lastName ? true : false}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
                   </Grid>
                   <Grid
                     item
@@ -228,6 +187,7 @@ const Register: React.FunctionComponent = () => {
                   >
                     <Button
                       type="submit"
+                      style={{ backgroundColor: '#8a476f' }}
                       variant="contained"
                       color="secondary"
                       disabled={isSubmitting}

@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const baseUrl: string = 'http://localhost:8080/api/';
+const baseUrl: string = 'https://taskavenue-backend.herokuapp.com/api/';
+//const baseUrl: string = 'http://localhost:8080/api/'
 
 export const addTodo = async (
   values: any,

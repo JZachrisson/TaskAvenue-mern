@@ -13,8 +13,9 @@ import todoListsRoutes from './routes/todoLists.routes';
 import todoItemsRoutes from './routes/todoItems.routes';
 import authRoutes from './routes/auth.routes';
 
+//'https://taskavenue.web.app'
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: 'https://taskavenue.web.app',
 };
 
 app.use(cors(corsOptions));
@@ -35,14 +36,20 @@ const pusher = new Pusher({
 
 const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.ki71t.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`;
 
-const options = { useNewUrlParser: true, useUnifiedTopology: true };
-mongoose.set('useFindAndModify', false);
+// const options = { useNewUrlParser: true, useUnifiedTopology: true };
+// mongoose.set('useFindAndModify', false);
 
 mongoose
-  .connect(uri, options)
-  .then(() => console.log('DB connection successful'))
-  .catch((error) => {
-    throw error;
+  .connect(uri, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log('DB Connected!!');
+  })
+  .catch((err) => {
+    console.log(Error, err.message);
   });
 
 const db = mongoose.connection;

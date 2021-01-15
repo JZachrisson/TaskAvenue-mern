@@ -16,6 +16,10 @@ import axios from 'axios';
 import './TodoList.css';
 import { Formik, Form } from 'formik';
 
+const baseUrl: string = 'https://taskavenue-backend.herokuapp.com/api/';
+
+//const baseUrl: string = 'http://localhost:8080/api/';
+
 interface Values {
   name: string;
   description: string;
@@ -27,22 +31,20 @@ const TodoList: React.FC = () => {
   const [copied, setCopied] = useState(false);
   const [todos, setTodos] = useState([]);
 
-  let { id } = useParams<{ id: string }>();
+  let { id }: any = useParams();
 
   const submitTodo = (values: Values) => {
     addTodo(values, auth.username, id);
   };
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/api/todolists/${id}`).then((response) => {
+    axios.get(`${baseUrl}todolists/${id}`).then((response) => {
       setListName(response.data.list.name);
     });
 
-    axios
-      .get(`http://localhost:8080/api/todoitems/list/${id}`)
-      .then((response) => {
-        setTodos(response.data.items);
-      });
+    axios.get(`${baseUrl}todoitems/list/${id}`).then((response) => {
+      setTodos(response.data.items);
+    });
   }, []);
 
   useEffect(() => {
@@ -52,32 +54,26 @@ const TodoList: React.FC = () => {
 
     const listChannel = pusher.subscribe('todolists');
     listChannel.bind('updated', function (data: any) {
-      axios
-        .get(`http://localhost:8080/api/todoitems/${data.itemId}`)
-        .then((response) => {
-          setTodos([response.data.item, ...todos]);
-        });
+      axios.get(`${baseUrl}todoitems/${data.itemId}`).then((response) => {
+        setTodos([response.data.item, ...todos]);
+      });
     });
 
     const itemsChannel = pusher.subscribe('todoitems');
     itemsChannel.bind('deleted', function (data: any) {
       console.log('DELETED');
 
-      axios
-        .get(`http://localhost:8080/api/todoitems/list/${id}`)
-        .then((response) => {
-          setTodos(response.data.items);
-        });
+      axios.get(`${baseUrl}todoitems/list/${id}`).then((response) => {
+        setTodos(response.data.items);
+      });
     });
 
     itemsChannel.bind('updated', function (data: any) {
       console.log('UPDATED');
 
-      axios
-        .get(`http://localhost:8080/api/todoitems/list/${id}`)
-        .then((response) => {
-          setTodos(response.data.items);
-        });
+      axios.get(`${baseUrl}todoitems/list/${id}`).then((response) => {
+        setTodos(response.data.items);
+      });
     });
 
     return () => {

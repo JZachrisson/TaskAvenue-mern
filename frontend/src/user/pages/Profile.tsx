@@ -14,6 +14,10 @@ import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 import './Profile.css';
 
+//const baseUrl: string = 'https://taskavenue-backend.herokuapp.com/api/';
+
+//const baseUrl: string = 'http://localhost:8080/api/';
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -34,11 +38,14 @@ interface Values {
 }
 
 const newList = async (history: any, values: Values, user: string) => {
-  const list = await axios.post('http://localhost:8080/api/todolists', {
-    name: values.title,
-    listId: uuidv4(),
-    creator: user,
-  });
+  const list = await axios.post(
+    'https://taskavenue-backend.herokuapp.com/api/todolists',
+    {
+      name: values.title,
+      listId: uuidv4(),
+      creator: user,
+    }
+  );
 
   history.push(`/list/${list.data.todoList.listId}`);
 };
@@ -51,7 +58,9 @@ const Profile: React.FC = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/api/todolists/user/${auth.username}`)
+      .get(
+        `https://taskavenue-backend.herokuapp.com/api/todolists/user/${auth.username}`
+      )
       .then((response) => {
         setLists(response.data.lists);
       });

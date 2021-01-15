@@ -72,15 +72,13 @@ const Register: React.FunctionComponent = () => {
 
   const registerNewUser = (data: ISignUpForm, resetForm: Function) => {
     AuthService.register(data.username, data.password)
-      .then((response) => {
-        console.log('RESPONSE 1', response);
-        //console.log(response);
+      .then(() => {
+        setFormStatus(formStatusProps.success);
+        resetForm({});
       })
       .catch((error) => {
-        console.log('ERROR CAUGHT!', error);
         const response = error.response;
         if (response.status === 400) {
-          console.log('HEJ?');
           setFormStatus(formStatusProps.duplicate);
         } else {
           setFormStatus(formStatusProps.error);

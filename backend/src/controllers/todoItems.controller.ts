@@ -14,7 +14,8 @@ export const getTodoItemById = async (
   try {
     item = await TodoItem.findById(itemId);
   } catch (error) {
-    console.log(error);
+    res.status(500).send({ message: error });
+    return;
   }
 
   res.json({ item: item });
@@ -40,7 +41,8 @@ export const createTodoItem = async (
   try {
     await createdItem.save();
   } catch (err) {
-    console.log(err);
+    res.status(500).send({ message: err });
+    return;
   }
 
   await TodoList.findOneAndUpdate(
@@ -67,7 +69,8 @@ export const getTodoItemsByListId = async (
       ),
     });
   } catch (error) {
-    console.log(error);
+    res.status(500).send({ message: error });
+    return;
   }
 };
 
@@ -80,7 +83,8 @@ export const toggleCompletedTodo = async (
       todoItem.status = !todoItem.status;
       todoItem.save(function (err: any) {
         if (err) {
-          console.error('ERROR!');
+          res.status(500).send({ message: err });
+          return;
         }
       });
     });
@@ -89,7 +93,8 @@ export const toggleCompletedTodo = async (
       message: 'Todo updated',
     });
   } catch (error) {
-    console.log(error);
+    res.status(500).send({ message: error });
+    return;
   }
 };
 
@@ -107,7 +112,8 @@ export const editTodo = async (req: Request, res: Response): Promise<void> => {
       todo: editedTodo,
     });
   } catch (error) {
-    console.log(error);
+    res.status(500).send({ message: error });
+    return;
   }
 };
 
@@ -124,6 +130,7 @@ export const deleteTodo = async (
       todo: deletedTodo,
     });
   } catch (error) {
-    console.log(error);
+    res.status(500).send({ message: error });
+    return;
   }
 };

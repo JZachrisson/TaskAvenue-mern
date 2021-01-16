@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../../shared/context/auth-context';
@@ -9,7 +10,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 import './Profile.css';
@@ -38,14 +39,11 @@ interface Values {
 }
 
 const newList = async (history: any, values: Values, user: string) => {
-  const list = await axios.post(
-    'https://taskavenue-backend.herokuapp.com/api/todolists',
-    {
-      name: values.title,
-      listId: uuidv4(),
-      creator: user,
-    }
-  );
+  const list = await axios.post('http://localhost:8080/api/todolists', {
+    name: values.title,
+    listId: uuidv4(),
+    creator: user,
+  });
 
   history.push(`/list/${list.data.todoList.listId}`);
 };
@@ -58,9 +56,7 @@ const Profile: React.FC = () => {
 
   useEffect(() => {
     axios
-      .get(
-        `https://taskavenue-backend.herokuapp.com/api/todolists/user/${auth.username}`
-      )
+      .get(`http://localhost:8080/api/todolists/user/${auth.username}`)
       .then((response) => {
         setLists(response.data.lists);
       });

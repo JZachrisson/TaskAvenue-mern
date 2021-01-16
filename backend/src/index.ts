@@ -12,10 +12,10 @@ const PORT: string | number = process.env.PORT || 8080;
 import todoListsRoutes from './routes/todoLists.routes';
 import todoItemsRoutes from './routes/todoItems.routes';
 import authRoutes from './routes/auth.routes';
-
+//'http://localhost:3000'
 //'https://taskavenue.web.app'
 const corsOptions = {
-  origin: 'https://taskavenue.web.app',
+  origin: 'http://localhost:3000',
 };
 
 app.use(cors(corsOptions));
@@ -35,9 +35,6 @@ const pusher = new Pusher({
 });
 
 const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.ki71t.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`;
-
-// const options = { useNewUrlParser: true, useUnifiedTopology: true };
-// mongoose.set('useFindAndModify', false);
 
 mongoose
   .connect(uri, {

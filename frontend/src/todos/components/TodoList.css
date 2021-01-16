@@ -1,4 +1,6 @@
 .todo-list {
+  display: flex;
+  flex-direction: column;
   list-style: none;
   border-top: 2px solid #a75d8a;
   max-width: 600px;

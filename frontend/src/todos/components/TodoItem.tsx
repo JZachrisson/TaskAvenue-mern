@@ -20,16 +20,16 @@ const useStyles = makeStyles((theme) => ({
   },
   listItem: {
     width: '100%',
-    maxWidth: 900,
+    maxWidth: '900px',
+    minHeight: '100px',
     display: 'flex',
+    position: 'relative',
     justifyContent: 'space-between',
     marginLeft: 'auto',
     marginRight: 'auto',
     marginTop: '15px',
-    paddingLeft: '15px',
-    paddingRight: '15px',
-    paddingTop: '25px',
-    paddingBottom: '10px',
+    paddingLeft: '3px',
+    paddingRight: '3px',
     boxShadow: theme.shadows[5],
     backgroundColor: theme.palette.background.paper,
   },
@@ -70,7 +70,7 @@ const TodoItem: React.FC<Props> = ({ todo }) => {
             onChange={(e) => setName(e.target.value)}
           />
           <input
-            maxLength={15}
+            maxLength={100}
             value={description}
             placeholder={todo.description}
             onChange={(e) => setDescription(e.target.value)}
@@ -93,43 +93,62 @@ const TodoItem: React.FC<Props> = ({ todo }) => {
           </Button>
         </div>
       </Modal>
-      <ListItem button className={classes.listItem}>
+      <ListItem button className={`${classes.listItem} ${checkTodo}`}>
         <div className="todo-item">
           <Checkbox
-            style={{ color: 'green', transform: 'scale(1.5)' }}
+            style={{
+              color: '#44bd32',
+              transform: 'scale(1.3)',
+            }}
             checked={todo.status}
             onChange={() => toggleCompletedTodo(todo._id)}
           />
-          <div>
-            <div className="todo-item-text">
-              <h5 className={checkTodo}>{todo.name}</h5>
-              {todo.description ? (
-                <p className={checkTodo}>{todo.description}</p>
-              ) : (
-                ''
-              )}
-            </div>
+          <div className="todo-item-text">
+            <h4 className={checkTodo}>{todo.name}</h4>
+            {todo.description ? (
+              <p className={checkTodo}>{todo.description}</p>
+            ) : (
+              ''
+            )}
           </div>
         </div>
 
         <div className="todo-item-info">
-          <div style={{ display: 'inline-block', marginRight: '15px' }}>
+          <div style={{ position: 'absolute', right: '10px', top: '12px' }}>
             {todo.creator}
           </div>
 
           <Button
+            style={{ padding: '0' }}
             color="primary"
             onClick={() => setOpen(true)}
             startIcon={
-              <EditIcon style={{ fontSize: '30px', color: '#a75d8a' }} />
+              <EditIcon
+                style={{
+                  position: 'absolute',
+                  left: '55px',
+                  padding: '0',
+                  bottom: '-5px',
+                  fontSize: '30px',
+                  color: '#a75d8a',
+                }}
+              />
             }
           ></Button>
           <Button
+            className="action-btn"
+            style={{ padding: '0' }}
             color="secondary"
             onClick={() => deleteTodo(todo._id)}
             startIcon={
               <DeleteOutlineIcon
-                style={{ fontSize: '30px', color: '#a75d8a' }}
+                style={{
+                  position: 'absolute',
+                  padding: '0',
+                  bottom: '-5px',
+                  fontSize: '30px',
+                  color: '#a75d8a',
+                }}
               />
             }
           ></Button>

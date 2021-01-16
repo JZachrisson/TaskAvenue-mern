@@ -6,13 +6,14 @@
   color: grey;
 }
 
-.todo-item-edit-btn {
-  margin-right: 10px;
+.todo-item-text {
+  margin-left: 5px;
+  max-width: 180px;
+  word-wrap: break-word;
 }
 
-.todo-item-text {
-  text-align: left;
-  margin-left: 20px;
+.todo-item-text > p {
+  word-wrap: break-word;
 }
 
 .todo-item-info {
@@ -21,4 +22,18 @@
 
 .line-through {
   text-decoration: line-through;
+  order: 1;
+}
+@media only screen and (min-width: 600px) {
+  .todo-item-text {
+    max-width: 350px;
+    word-wrap: break-word;
+  }
+}
+
+@media only screen and (min-width: 801px) {
+  .todo-item-text {
+    max-width: 400px;
+    word-wrap: break-word;
+  }
 }

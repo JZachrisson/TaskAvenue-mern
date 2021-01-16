@@ -49,7 +49,7 @@ interface IFormStatusProps {
 
 const formStatusProps: IFormStatusProps = {
   success: {
-    message: 'Signed up successfully. Please go to login page.',
+    message: 'Signed up successfully! Please go to login page.',
     type: 'success',
   },
   duplicate: {

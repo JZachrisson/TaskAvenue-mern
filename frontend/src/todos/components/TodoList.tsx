@@ -16,9 +16,9 @@ import axios from 'axios';
 import './TodoList.css';
 import { Formik, Form } from 'formik';
 
-const baseUrl: string = 'https://taskavenue-backend.herokuapp.com/api/';
+//const baseUrl: string = 'https://taskavenue-backend.herokuapp.com/api/';
 
-//const baseUrl: string = 'http://localhost:8080/api/';
+const baseUrl: string = 'http://localhost:8080/api/';
 
 interface Values {
   name: string;
@@ -30,8 +30,17 @@ const TodoList: React.FC = () => {
   const [listName, setListName] = useState('');
   const [copied, setCopied] = useState(false);
   const [todos, setTodos] = useState([]);
+  const [message, setMessage] = useState('');
 
   let { id }: any = useParams();
+
+  const displayMessage = () => {
+    setCopied(true);
+    setMessage('URL copied to clipboard');
+    setTimeout(function () {
+      setMessage('');
+    }, 3000);
+  };
 
   const submitTodo = (values: Values) => {
     addTodo(values, auth.username, id);
@@ -112,7 +121,7 @@ const TodoList: React.FC = () => {
             <div>
               <TextField
                 placeholder="Description (Optional)"
-                inputProps={{ maxLength: 15 }}
+                inputProps={{ maxLength: 1000 }}
                 name="description"
                 value={values.description}
                 onChange={handleChange}
@@ -137,15 +146,18 @@ const TodoList: React.FC = () => {
       </Formik>
       <CopyToClipboard
         text={window.location.href}
-        onCopy={() => setCopied(true)}
+        onCopy={() => displayMessage()}
       >
         <Button variant="contained" className="clipboard-btn">
           {' '}
           SHARE LIST
         </Button>
       </CopyToClipboard>
+
       {copied ? (
-        <span style={{ color: 'green' }}>URL copied to clipboard!</span>
+        <span style={{ display: 'block', marginTop: '10px', color: 'green' }}>
+          {message}
+        </span>
       ) : null}
       <ul className="todo-list">
         {todos.map((todo) => {

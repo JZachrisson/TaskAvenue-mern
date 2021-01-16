@@ -8,7 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { AuthContext } from '../../../shared/context/auth-context';
 import { useHistory } from 'react-router-dom';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   navbar: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -16,6 +16,8 @@ const useStyles = makeStyles((theme) => ({
   },
   items: {
     color: 'white',
+    fontSize: '20px',
+    paddingRight: 0,
     fontFamily: 'Bebas Neue',
   },
   customFont: {
@@ -24,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Header() {
+const Header: React.FC = () => {
   const auth = useContext(AuthContext);
   const history = useHistory();
 
@@ -47,7 +49,7 @@ export default function Header() {
 
           {auth.isLoggedIn && (
             <div className={classes.items}>
-              <IconButton color="inherit">
+              <IconButton style={{ paddingRight: '2px' }} color="inherit">
                 <NavLink
                   style={{ color: 'white', textDecoration: 'none' }}
                   className={`${classes.items} link`}
@@ -58,7 +60,7 @@ export default function Header() {
                 </NavLink>
               </IconButton>
               <IconButton
-                className="link"
+                className={`${classes.items} link`}
                 color="inherit"
                 onClick={() => {
                   auth.logout();
@@ -99,4 +101,6 @@ export default function Header() {
       <Toolbar />
     </React.Fragment>
   );
-}
+};
+
+export default Header;

@@ -3,6 +3,8 @@
 Welcome to Task Avenue! A real-time collaborative list web app created with the [MERN Stack](https://www.mongodb.com/mern-stack) and written in TypeScript.
 [Check it out here!](https://taskavenue.web.app)
 
+<img width="1440" alt="Screenshot 2021-01-17 at 11 36 57" src="https://user-images.githubusercontent.com/49671818/104838079-f1ddbe00-58b8-11eb-9f8b-f5b5cbd76d39.png">
+
 ## Table of contents
 * [General info](#general-info)
 * [Technologies](#technologies)

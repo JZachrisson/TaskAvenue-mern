@@ -16,9 +16,9 @@ import axios from 'axios';
 import './TodoList.css';
 import { Formik, Form } from 'formik';
 
-//const baseUrl: string = 'https://taskavenue-backend.herokuapp.com/api/';
+const baseUrl: string = 'https://taskavenue-backend.herokuapp.com/api/';
 
-const baseUrl: string = 'http://localhost:8080/api/';
+//const baseUrl: string = 'http://localhost:8080/api/';
 
 interface Values {
   name: string;

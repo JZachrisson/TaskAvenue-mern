@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-//const API_URL: string = 'https://taskavenue-backend.herokuapp.com/api/auth/';
-const API_URL: string = 'http://localhost:8080/api/auth/';
+const API_URL: string = 'https://taskavenue-backend.herokuapp.com/api/auth/';
+//const API_URL: string = 'http://localhost:8080/api/auth/';
 
 class AuthService {
   login(username: string, password: string) {

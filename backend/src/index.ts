@@ -12,10 +12,9 @@ const PORT: string | number = process.env.PORT || 8080;
 import todoListsRoutes from './routes/todoLists.routes';
 import todoItemsRoutes from './routes/todoItems.routes';
 import authRoutes from './routes/auth.routes';
-//'http://localhost:3000'
-//'https://taskavenue.web.app'
+
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: 'https://taskavenue.web.app',
 };
 
 app.use(cors(corsOptions));
@@ -74,12 +73,10 @@ db.once('open', () => {
 
   itemsChangeStream.on('change', (change) => {
     if (change.operationType === 'delete') {
-      console.log('ITEM DELETED');
       pusher.trigger('todoitems', 'deleted', {
         itemId: change.documentKey._id,
       });
     } else if (change.operationType === 'update') {
-      console.log('ITEM UPDATED');
       pusher.trigger('todoitems', 'updated', {
         itemId: change.documentKey._id,
       });

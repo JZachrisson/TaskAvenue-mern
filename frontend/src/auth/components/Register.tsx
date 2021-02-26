@@ -27,7 +27,8 @@ const useStyles = makeStyles((theme: Theme) =>
     submitButton: {
       marginTop: '24px',
     },
-    title: { textAlign: 'center' },
+    title: { textAlign: 'center', marginBottom: '40x' },
+    subTitle: { color: 'grey' },
     successMessage: { color: 'green' },
     errorMessage: { color: 'red' },
   })
@@ -111,7 +112,7 @@ const Register: React.FunctionComponent = () => {
                 /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()]).{8,20}\S$/
               )
               .required(
-                'Please enter a valid password. One uppercase, one lowercase, one special character and no spaces'
+                'Please enter a valid password. One uppercase, one number, one lowercase, one special character and no spaces'
               ),
           })}
         >
@@ -127,6 +128,10 @@ const Register: React.FunctionComponent = () => {
             return (
               <Form>
                 <h1 className={classes.title}>Sign up</h1>
+                <p className={classes.subTitle}>
+                  Please be aware that signing up a new user may take some time
+                  to load.
+                </p>
                 <Grid container justify="space-around" direction="row">
                   <Grid
                     item
@@ -158,7 +163,7 @@ const Register: React.FunctionComponent = () => {
                     className={classes.textField}
                   >
                     <TextField
-                      inputProps={{ maxLength: 10 }}
+                      inputProps={{ maxLength: 15 }}
                       name="password"
                       id="password"
                       label="Password"
@@ -168,8 +173,8 @@ const Register: React.FunctionComponent = () => {
                       error={errors.password && touched.password ? true : false}
                       helperText={
                         errors.password && touched.password
-                          ? 'Please enter a valid password. One uppercase, one lowercase, one special character and no spaces'
-                          : 'One uppercase, one lowercase, one special character and no spaces'
+                          ? 'Please enter a valid password. One uppercase, one lowercase, one number, one special character and no spaces'
+                          : 'One uppercase, one lowercase, one number, one special character and no spaces'
                       }
                       onChange={handleChange}
                       onBlur={handleBlur}

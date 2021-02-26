@@ -13,8 +13,9 @@ import todoListsRoutes from './routes/todoLists.routes';
 import todoItemsRoutes from './routes/todoItems.routes';
 import authRoutes from './routes/auth.routes';
 
+//'https://taskavenue.web.app',
 const corsOptions = {
-  origin: 'https://taskavenue.web.app',
+  origin: 'http://localhost:3001',
 };
 
 app.use(cors(corsOptions));

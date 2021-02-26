@@ -25,7 +25,7 @@ Frontend is created with:
 * [Pusher](https://pusher.com) - Setting up realtime connection between frontend and backend
 
 Backend is created with:
-* [Express](https://github.com/expressjs/express) - Written in TypeScript
+* [Express](https://github.com/expressjs/express) - RESTful API written in TypeScript
 * [MongoDB](https://www.mongodb.com) - NoSQL database
 * [Mongoose](https://github.com/Automattic/mongoose) - MongoDB object modeling tool
 * [Pusher](https://pusher.com) - Making MongoDB a realtime database with the combination of [MongoDB Change Streams](https://docs.mongodb.com/manual/changeStreams)

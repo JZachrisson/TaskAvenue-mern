@@ -12,8 +12,8 @@ Welcome to Task Avenue! A real-time collaborative list web app created with the 
 
 ## General info
 ### Features and User Stories implemented
-* :warning: **(required):** I as a user can create to-do items, such as a grocery list.
-* :warning: **(required):** I as another user can collaborate in real-time with user - so that we can (for example) edit our family shopping list together.
+* I as a user can create to-do items, such as a grocery list.
+* I as another user can collaborate in real-time with user - so that we can (for example) edit our family shopping list together.
 * I as a user can mark to-do items as "done", so that I can avoid clutter and focus on things that are still pending.
 * I as a user can create multiple to-do lists where each list has it's unique URL that I can share with my firends - so that I could have separate to-do lists for my groceries and work related tasks.
 * I as a user can be sure that my todos will be persisted so that important information is not lost when server restarts. (User can view all their lists on their profile page.)
